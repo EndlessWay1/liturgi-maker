@@ -1,14 +1,10 @@
 const dotenv = require('dotenv');
 
-// Set the NODE_ENV to 'development' by default.
-process.env.NODE_ENV = (process.env.NODE_ENV || 'development').toLowerCase();
-
-// Environment variables should be saved in a file named `.env` in the `./config` directory.
-// See `.env.example` for example.
-const envFound = dotenv.config({ path: '.env' });
-if (envFound.error) {
-  throw new Error("⚠️ Couldn't find .env file ⚠️");
+if (process.env.VERCEL !== '1') {
+  dotenv.config();
 }
+
+process.env.NODE_ENV = (process.env.NODE_ENV || 'development').toLowerCase();
 
 module.exports = {
   env: process.env.NODE_ENV,
