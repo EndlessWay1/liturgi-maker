@@ -5,3 +5,5 @@ desktop.ini
 .eslintcache
 .npm
 .vscode
+.vercel
+.env*
