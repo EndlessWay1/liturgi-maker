@@ -1,10 +1,9 @@
-import HTitle from '../General/HTitle'
-import Button from '../General/Button'
+import Button from "../General/Button";
+import HTitle from "../General/HTitle";
 
 export function Home() {
-  return (
-    <>
-      <div className="relative bg-granite shrink-0">
+  return <section id='home'>
+    <div className="relative bg-granite shrink-0">
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <div className="flex flex-col max-w-[90dvw] sm:max-w-prose gap-1">
             <HTitle className="text-white">Home</HTitle>
@@ -58,7 +57,5 @@ export function Home() {
             </Button>
           </div>
         </div>
-      </div>
-    </>
-  )
+      </div></section>;
 }
