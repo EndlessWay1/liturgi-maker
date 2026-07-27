@@ -7,26 +7,34 @@ Source: https://sketchfab.com/3d-models/toy-cat-f04d46d26172423688e3f64f72c99bad
 Title: Toy Cat
 */
 
-import { useRef } from "react";
+import { useRef, type JSX } from "react";
 import { Sphere, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+import type { GLTF } from "three/examples/jsm/Addons.js";
 
-// Tweak these to line the helmet up with your model's actual head position/size
-const HELMET_RADIUS = 50;
-const HELMET_POSITION = [-10, 200, 0]; // [x, y, z] — nudge until it sits on the head
+type GLTFResult = GLTF & {
+  nodes: {
+    Toy_Cat_Toy_Cat_Material_0: THREE.Mesh;
+  };
+  materials: {
+    Toy_Cat_Material: THREE.Material;
+  };
+};
 
-export default function ToyCat(props) {
-  const catRef = useRef(null);
-  const helmetRef = useRef(null);
+export default function ToyCat(props: JSX.IntrinsicElements["group"]) {
+  const catRef = useRef<THREE.Group>(null);
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (catRef.current) {
       catRef.current.rotation.x -= delta / 10;
       catRef.current.rotation.y -= delta / 15;
     }
   });
 
-  const { nodes, materials } = useGLTF("./Cat/source/toy_cat.glb");
+  const { nodes, materials } = useGLTF(
+    "./Cat/source/toy_cat.glb",
+  ) as unknown as GLTFResult;
 
   return (
     <group {...props} dispose={null}>
@@ -40,7 +48,7 @@ export default function ToyCat(props) {
           />
 
           {/* Glass helmet — nested here so it inherits the cat's transform/scale and moves with it */}
-          <Sphere args={[HELMET_RADIUS, 64, 64]} position={HELMET_POSITION}>
+          <Sphere args={[50, 64, 64]} position={[-10, 200, 0]}>
             <meshPhysicalMaterial
               // roughness={0}
               transmission={1}

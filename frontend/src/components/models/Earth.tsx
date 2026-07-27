@@ -7,21 +7,40 @@ Source: https://sketchfab.com/3d-models/earth-5f9c35be31a047928eace8b415a8ee3a
 Title: Earth
 */
 
-import React, { useRef } from "react";
+import { useRef, type JSX } from "react";
+import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import type { GLTF } from "three-stdlib";
 
-export default function Earth(props) {
-  const { nodes, materials } = useGLTF("./Earth/earth.glb");
-  const earthRef = useRef(null);
+type GLTFResult = GLTF & {
+  nodes: {
+    pSphere1_phong1_0: THREE.Mesh;
+    pSphere1_phong1_0_1: THREE.Mesh;
+    pSphere4_lambert6_0: THREE.Mesh;
+    pSphere4_lambert6_0_1: THREE.Mesh;
+    pSphere5_lambert7_0: THREE.Mesh;
+    pSphere5_lambert7_0_1: THREE.Mesh;
+  };
+  materials: {
+    phong1: THREE.MeshPhongMaterial;
+    lambert6: THREE.MeshLambertMaterial;
+    lambert7: THREE.MeshLambertMaterial;
+  };
+};
+
+export default function Earth(props: JSX.IntrinsicElements["group"]) {
+  const { nodes, materials } = useGLTF(
+    "./Earth/earth.glb",
+  ) as unknown as GLTFResult;
+  const earthRef = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (earthRef.current) {
       earthRef.current.rotation.x += 0.000173;
       earthRef.current.rotation.y += 0.00001;
     }
-  })
-
+  });
 
   return (
     <group {...props} dispose={null} ref={earthRef}>

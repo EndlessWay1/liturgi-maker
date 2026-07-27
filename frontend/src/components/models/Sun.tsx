@@ -1,7 +1,8 @@
+import type { JSX } from "react";
 
-function Sun(props) {
+function Sun(props: JSX.IntrinsicElements["group"]) {
   return (
-    <group {...props} dispose={null} >
+    <group {...props} dispose={null}>
       <mesh>
         <sphereGeometry args={[25, 32, 32]} />
         <meshBasicMaterial color={"#fff4e0"} />

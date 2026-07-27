@@ -34,7 +34,7 @@ function PlanetCanvas(props: CanvasProps) {
 
       <ToyCat rotation={[Math.PI / 2, 0, 0]} position={[1.5, 0, 0]} />
       <Stars />
-      <Earth position={[3, 100, -100]} shadows />
+      <Earth position={[3, 100, -100]} />
     </Canvas>
   );
 }
