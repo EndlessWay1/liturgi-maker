@@ -1,42 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Felipa&family=Imperial+Script&family=Lobster&family=Meie+Script&family=Tangerine:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Felipa&family=Imperial+Script&family=Lobster&family=Meie+Script&family=Tangerine:wght@400;700&family=Commissioner:wght@100..900&display=swap");
 
-@import 'tailwindcss';
-
-body {
-}
+@import "tailwindcss";
 
 .lobster-regular {
-  font-family: 'Lobster', sans-serif;
+  font-family: "Lobster", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.comisioner {
+  font-family: "Commissioner", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
 .imperial-script-regular {
-  font-family: 'Imperial Script', cursive;
+  font-family: "Imperial Script", cursive;
   font-weight: 400;
   font-style: normal;
 }
 
 .tangerine-regular {
-  font-family: 'Tangerine', cursive;
+  font-family: "Tangerine", cursive;
   font-weight: 400;
   font-style: normal;
 }
 
 .tangerine-bold {
-  font-family: 'Tangerine', cursive;
+  font-family: "Tangerine", cursive;
   font-weight: 700;
   font-style: normal;
 }
 
 .meie-script-regular {
-  font-family: 'Meie Script', cursive;
+  font-family: "Meie Script", cursive;
   font-weight: 400;
   font-style: normal;
 }
 
 .felipa-regular {
-  font-family: 'Felipa', serif;
+  font-family: "Felipa", serif;
   font-weight: 400;
   font-style: normal;
 }
@@ -50,15 +53,78 @@ body {
 }
 
 @theme {
-  --color-dark-slate-grey: #374b4a;
-  --color-granite: #526760;
+  --color-dark-400: #86868b;
+  --color-dark-300: #2e2e30;
+  --color-dark-200: #141414;
+  --color-dark-100: #121212;
+
   --color-lavender-grey: #8b8bae;
   --color-sky-reflection: #8ab2ca;
   --color-frosted-blue: #88d9e6;
   --color-icy-aqua: #c5fffd;
-  --font-lobster: 'Lobster', sans-serif;
-  --font-imperial: 'Imperial Script', cursive;
-  --font-tangerine: 'Tangerine', cursive;
-  --font-meie-script: 'Meie Script', cursive;
-  --font-felipa: 'Felipa', serif;
+  --font-lobster: "Lobster", sans-serif;
+  --font-imperial: "Imperial Script", cursive;
+  --font-tangerine: "Tangerine", cursive;
+  --font-meie-script: "Meie Script", cursive;
+  --font-felipa: "Felipa", serif;
+  --font-commissioner: "Commissioner", sans-serif;
+}
+
+* {
+  scrollbar-color: var(--color-dark-300) var(--color-black);
+}
+
+html {
+  width: 100vw;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--font-commissioner);
+  font-size: medium;
+  @apply bg-white dark:bg-black;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility bg-text-color {
+  @apply text-black bg-white dark:bg-black dark:text-white;
+}
+
+@utility text-colors {
+  @apply text-black dark:text-white;
+}
+
+@layer components {
+  header {
+    @apply w-screen fixed top-0 left-0 z-50 flex-center bg-text-color min-h-[7vh];
+
+    nav {
+      @apply container mx-auto justify-center md:justify-between items-center flex px-5 2xl:px-2;
+
+      div {
+        @apply flex-row flex justify-between items-center max-w-xl lg:max-w-3xl;
+
+        img {
+          @apply cursor-pointer hover:-translate-y-0.5 transition-all duration-300 ease-in-out h-8 w-auto;
+        }
+
+        h2 {
+          @apply text-colors font-semibold lg:text-xl;
+        }
+      }
+
+      ul {
+        @apply flex-center gap-8 not-md:hidden;
+        a {
+          @apply opacity-0 md:opacity-80 md:hover:opacity-100 md:block cursor-pointer transition-all duration-300 ease-in-out;
+        }
+      }
+    }
+  }
 }

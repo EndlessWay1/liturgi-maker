@@ -1,22 +1,24 @@
-/* eslint-disable react-refresh/only-export-components */
-import { BrowserRouter } from 'react-router-dom'
-import Header from './components/Header/Header'
-import { AllRoutes } from './components/AllRoutes'
-import Footer from './components/Footer'
-import Main from './components/Main'
+import Header from "./components/Header";
+import { AllRoutes } from "./components/AllRoutes";
+import Footer from "./components/Footer";
+import Main from "./components/Main";
+import { BrowserRouter } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger, SplitText } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function App() {
   return (
     <>
-      <div className="min-h-screen flex flex-col font-sans bg-icy-aqua/90">
-        <BrowserRouter>
-          <Header />
-          <Main>
-            <AllRoutes />
-          </Main>
-        </BrowserRouter>
+      <Header />
+      <BrowserRouter>
+        <Main>
+          <AllRoutes />
+        </Main>
+        <div className='h-dvh bg-black' />
         <Footer />
-      </div>
+      </BrowserRouter>
     </>
-  )
+  );
 }
