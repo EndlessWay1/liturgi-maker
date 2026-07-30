@@ -1,9 +1,11 @@
 import Header from "./Header";
-import { AllRoutes } from ".//AllRoutes";
 import Footer from ".//Footer";
-import { BrowserRouter } from "react-router-dom";
-import {useDarkMode} from "../context/DarkModeContext";
+import { useDarkMode } from "../context/DarkModeContext";
 import { useEffect } from "react";
+import { About } from "./contents/About";
+import { Surat } from "./contents/Surat";
+import Liturgi from "./contents/Liturgi";
+import { Home } from "./contents/Home";
 
 export default function AppWrapper() {
   const { isDark } = useDarkMode();
@@ -15,12 +17,15 @@ export default function AppWrapper() {
   return (
     <div data-theme={isDark ? "dark" : "light"}>
       <Header />
-      <BrowserRouter>
-        <AllRoutes />
+      <main>
+        <Home key={"home"} />
+        <Liturgi key={"liturgi"} />
+        <Surat key={"surat"} />
+        <About key={"about"} />
+      </main>
 
-        <div className='h-dvh bg-colors' />
-        <Footer />
-      </BrowserRouter>
+      <div className='h-dvh bg-colors' />
+      <Footer />
     </div>
   );
 }

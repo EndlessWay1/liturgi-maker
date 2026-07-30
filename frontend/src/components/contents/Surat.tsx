@@ -1,3 +1,7 @@
 export function Surat() {
-  return <div>Surat</div>
+  return (
+    <div id='surat' className='h-dvh bg-colors text-colors'>
+      Surat
+    </div>
+  );
 }

@@ -60,6 +60,9 @@
   --color-dark-200: #141414;
   --color-dark-100: #121212;
 
+  --color-white-100: #efefef;
+  --color-white-200: #cecece;
+
   --color-lavender-grey: #8b8bae;
   --color-sky-reflection: #8ab2ca;
   --color-frosted-blue: #88d9e6;
@@ -94,21 +97,21 @@ body {
   @apply flex items-center justify-center;
 }
 
-@utility bg-text-color {
-  @apply text-black bg-white dark:bg-black dark:text-white;
-}
-
 @utility text-colors {
   @apply text-black dark:text-white;
 }
 
 @utility bg-colors {
-  @apply bg-white dark:bg-black;
+  @apply bg-white-100 dark:bg-dark-100;
+}
+
+@utility bg-text-color {
+  @apply text-colors bg-colors;
 }
 
 @layer components {
   header {
-    @apply w-screen fixed top-0 left-0 z-50 flex-center bg-text-color min-h-[7vh];
+    @apply w-screen fixed top-0 left-0 z-50 flex-center bg-text-color min-h-[7vh] ;
 
     nav {
       @apply container mx-auto justify-center md:justify-between items-center flex md:px-[8vw] lg:px-[10vw];
@@ -152,8 +155,8 @@ body {
           @apply bg-transparent py-3 pl-2;
           ul {
             @apply flex flex-col gap-4;
-            a {
-              @apply opacity-80 flex-row hover:opacity-100 cursor-pointer transition-all duration-300 ease-in-out;
+            button {
+              @apply opacity-70 flex-row hover:opacity-100 cursor-pointer transition-all duration-300 ease-in-out;
             }
           }
         }
@@ -162,10 +165,10 @@ body {
   }
 
   #home {
-    @apply relative z-10 h-dvh;
+    @apply relative z-10 h-dvh bg-colors;
 
     #hero {
-      @apply absolute w-[50vw] top-1/3 left-1/2 md:top-1/2 md:left-1/2 
+      @apply absolute w-[50vw] top-1/3 left-1/2 md:top-1/2 
          -translate-x-1/2 -translate-y-1/2
          -ml-16 md:-ml-8 md:-mt-8
          flex flex-col align-middle;
@@ -180,8 +183,19 @@ body {
       }
     }
 
+    #scrolldown {
+      @apply absolute h-[30vh]! w-full! inset-x-0 bottom-0  flex flex-col align-middle justify-center;
+      h2 {
+        @apply text-white font-semibold text-3xl lg:text-5xl text-center;
+      }
+
+      .down-arrow {
+        @apply h-[10vh]! w-12 md:w-16 mx-auto;
+      }
+    }
+
     #canvas {
-      @apply w-full! h-[80vh]! md:h-dvh! absolute inset-0 z-[-1] bg-dark-200;
+      @apply w-full! h-dvh! absolute inset-0 z-[-1] bg-dark-200;
     }
   }
 }

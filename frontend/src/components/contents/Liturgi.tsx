@@ -1,4 +1,8 @@
 function Liturgi() {
-  return <div>Liturgi</div>
+  return (
+    <div id='liturgi' className='h-dvh bg-colors text-colors'>
+      Liturgi
+    </div>
+  );
 }
-export default Liturgi
+export default Liturgi;
