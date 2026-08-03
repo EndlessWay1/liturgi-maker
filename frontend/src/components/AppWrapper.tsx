@@ -6,6 +6,7 @@ import { About } from "./contents/About";
 import { Surat } from "./contents/Surat";
 import Liturgi from "./contents/Liturgi";
 import { Home } from "./contents/Home";
+import LiturgiExp from "./contents/LiturgiExp";
 
 export default function AppWrapper() {
   const { isDark } = useDarkMode();
@@ -19,6 +20,7 @@ export default function AppWrapper() {
       <Header />
       <main>
         <Home key={"home"} />
+        <LiturgiExp />
         <Liturgi key={"liturgi"} />
         <Surat key={"surat"} />
         <About key={"about"} />

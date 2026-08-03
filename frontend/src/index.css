@@ -97,6 +97,10 @@ body {
   @apply flex items-center justify-center;
 }
 
+@utility flex-between {
+  @apply flex items-center justify-between;
+}
+
 @utility text-colors {
   @apply text-black dark:text-white;
 }
@@ -109,15 +113,63 @@ body {
   @apply text-colors bg-colors;
 }
 
+@utility text-title {
+  @apply font-semibold text-3xl lg:text-5xl;
+}
+
+@utility linearGrad-white {
+  @apply bg-linear-to-tl from-slate-200 via-stone-400 to-gray-600;
+}
+
+@utility linearGrad-dark {
+  @apply bg-linear-to-tl from-slate-700 via-zinc-800 to-gray-900;
+}
+
+@utility linearGrad-color {
+  @apply linearGrad-white dark:linearGrad-dark;
+}
+
+@utility abs-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@utility radial-gradient-dark {
+  @apply bg-dark-100;
+  background: radial-gradient(
+    circle at center,
+    #434343 0%,
+    #000 50%,
+    transparent 100%
+  );
+}
+
+@utility radial-gradient-white {
+  @apply bg-white-100;
+  background: radial-gradient(
+    circle at center,
+    #cecece 0%,
+    #e5fffd 50%,
+    transparent 100%
+  );
+}
+
+@utility radial-gradient {
+  @apply radial-gradient-white dark:radial-gradient-dark;
+}
+
+@utility mult-bord {
+  @apply ring ring-offset-3 ring-offset-transparent ring-black/20 dark:ring-white/20;
+}
+
 @layer components {
   header {
-    @apply w-screen fixed top-0 left-0 z-50 flex-center bg-text-color min-h-[7vh] ;
+    @apply w-screen fixed top-0 left-0 z-50 flex-center bg-text-color min-h-[7vh];
 
     nav {
       @apply container mx-auto justify-center md:justify-between items-center flex md:px-[8vw] lg:px-[10vw];
 
       div {
-        @apply flex-row flex justify-between items-center max-w-xl lg:max-w-2xl;
+        @apply flex-row flex-between max-w-xl lg:max-w-2xl;
 
         img {
           @apply cursor-pointer hover:-translate-y-0.5 transition-all duration-300 ease-in-out h-8 w-auto;
@@ -186,7 +238,7 @@ body {
     #scrolldown {
       @apply absolute h-[30vh]! w-full! inset-x-0 bottom-0  flex flex-col align-middle justify-center;
       h2 {
-        @apply text-white font-semibold text-3xl lg:text-5xl text-center;
+        @apply text-white text-title text-center;
       }
 
       .down-arrow {
@@ -195,7 +247,219 @@ body {
     }
 
     #canvas {
-      @apply w-full! h-dvh! absolute inset-0 z-[-1] bg-dark-200;
+      @apply w-full! h-dvh! absolute inset-0 z-[-1] bg-dark-200 font-felipa;
+    }
+  }
+
+  #liturgi-exp {
+    @apply flex-center h-dvh w-full relative linearGrad-color overflow-hidden;
+
+    h2 {
+      @apply text-colors font-semibold text-6xl lg:text-9xl;
+    }
+
+    img {
+      @apply w-full h-dvh absolute z-0 object-cover;
+    }
+
+    .box {
+      @apply absolute max-w-xs;
+
+      h3 {
+        @apply text-shadow-dark-100 dark:text-white-200 lg:text-2xl font-semibold;
+      }
+
+      p {
+        @apply lg:text-xl text-base text-gray-900 dark:text-gray-100;
+      }
+
+      span {
+        @apply text-lg text-gray-800 dark:text-gray-300;
+      }
+    }
+  }
+
+  #liturgi {
+    @apply text-colors bg-colors h-fit pb-10 relative radial-gradient flex flex-col gap-16;
+
+    h1 {
+      @apply text-title text-center pt-20;
+    }
+
+    #form-canvas {
+      @apply w-[50vw] border border-dark-100 dark:border-white-100 mx-auto p-0.5 rounded-xl outline outline-offset-2;
+
+      p {
+        @apply text-red-400;
+      }
+
+      #form-sect {
+        @apply p-5 flex flex-col gap-4;
+        h2 {
+          @apply font-semibold text-xl md:text-3xl my-auto;
+        }
+        .form-content {
+          @apply -mt-2 gap-4;
+          div {
+            @apply flex flex-col gap-1;
+            h3 {
+              @apply text-colors text-xl;
+            }
+
+            input {
+              @apply w-full rounded-sm px-1.5 py-1
+                outline-none
+                border-none
+                /* border when clicked */
+                ring-1
+                ring-dark-300/50
+                focus:ring-dark-100
+                dark:ring-white-200/50
+                dark:focus:ring-white
+                dark:[&::-webkit-calendar-picker-indicator]:invert;
+              /* invalid */
+              /* focus:invalid:ring-red-500; */
+            }
+          }
+        }
+      }
+
+      button {
+        @apply cursor-pointer px-3 py-2 text-xl outline rounded-lg hover:-outline-offset-1 hover:bg-white-200/25 bg-colors hover:dark:bg-dark-200/25;
+      }
+    }
+
+    #left-circle1 {
+      @apply absolute left-0 top-1/2 -translate-x-1/2 mult-bord w-[50vh] h-[50vh] rounded-full;
+
+      .circ1 {
+        @apply mult-bord abs-center  w-[40vh] h-[40vh] rounded-full;
+      }
+
+      .circ2 {
+        @apply mult-bord abs-center  w-[30vh] h-[30vh] rounded-full;
+      }
+    }
+
+    #left-circle3 {
+      @apply absolute left-16 top-1/2 -translate-x-1/2 -translate-y-1/2 mult-bord w-[70vh] h-[70vh] rounded-full;
+
+      .circ1 {
+        @apply mult-bord abs-center w-[60vh] h-[60vh] rounded-full;
+      }
+
+      .circ2 {
+        @apply mult-bord abs-center w-[50vh] h-[50vh] rounded-full;
+      }
+    }
+
+    #left-circle2 {
+      @apply absolute -left-10 top-10 -translate-x-1/2  mult-bord w-[30vh] h-[30vh] rounded-full;
+
+      .circ1 {
+        @apply mult-bord abs-center  w-[20vh] h-[20vh] rounded-full;
+      }
+    }
+
+    #right-circle1 {
+      @apply absolute -right-40 top-1/2 -translate-x-1/2 mult-bord w-[50vh] h-[50vh] rounded-full;
+
+      .circ1 {
+        @apply mult-bord abs-center  w-[40vh] h-[40vh] rounded-full;
+      }
+
+      .circ2 {
+        @apply mult-bord abs-center  w-[30vh] h-[30vh] rounded-full;
+      }
+    }
+
+    #right-circle3 {
+      @apply absolute -right-21 top-1/2 translate-x-1/2 -translate-y-1/2 mult-bord w-[70vh] h-[70vh] rounded-full;
+
+      .circ1 {
+        @apply mult-bord abs-center w-[60vh] h-[60vh] rounded-full;
+      }
+
+      .circ2 {
+        @apply mult-bord abs-center w-[50vh] h-[50vh] rounded-full;
+      }
+    }
+
+    #right-circle2 {
+      @apply absolute -right-10 top-10 -translate-x-1/2  mult-bord w-[30vh] h-[30vh] rounded-full;
+
+      .circ1 {
+        @apply mult-bord abs-center w-[20vh] h-[20vh] rounded-full;
+      }
+    }
+  }
+
+  #surat {
+    @apply text-colors bg-colors h-dvh pb-10 relative radial-gradient flex flex-col gap-16;
+
+    h1 {
+      @apply text-title text-center pt-20 z-10;
+    }
+
+    #form-canvas {
+      @apply w-[50vw] border border-dark-100 dark:border-white-100 mx-auto p-0.5 rounded-xl outline outline-offset-2 z-10;
+
+      p {
+        @apply text-red-400;
+      }
+
+      #form-sect {
+        @apply p-5 flex flex-col gap-4;
+        h2 {
+          @apply font-semibold text-xl md:text-3xl my-auto;
+        }
+        .form-content {
+          @apply -mt-2 gap-4;
+          div {
+            @apply flex flex-col gap-1;
+            h3 {
+              @apply text-colors text-xl;
+            }
+
+            input,
+            select {
+              @apply w-full rounded-sm px-1.5 py-1
+                outline-none
+                border-none
+                /* border when clicked */
+                ring-1
+                ring-dark-300/50
+                focus:ring-dark-100
+                dark:ring-white-200/50
+                dark:focus:ring-white
+                dark:[&::-webkit-calendar-picker-indicator]:invert;
+              /* invalid */
+              /* focus:invalid:ring-red-500; */
+            }
+            select {
+              @apply appearance-none pr-8 bg-no-repeat bg-right;
+              background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23374151'%3e%3cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.65a.75.75 0 01-1.08 0l-4.25-4.65a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3e%3c/svg%3e");
+              -position: right 0.5rem center;
+              background-size: 1.25em;
+
+              option {
+                @apply text-black;
+              }
+            }
+
+            .dark select {
+              background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.65a.75.75 0 01-1.08 0l-4.25-4.65a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3e%3c/svg%3e");
+            }
+          }
+        }
+      }
+
+      button {
+        @apply cursor-pointer px-3 py-2 text-xl outline rounded-lg hover:-outline-offset-1 hover:bg-white-200/25 bg-colors hover:dark:bg-dark-200/25;
+      }
+    }
+    img {
+      @apply w-full h-dvh absolute z-0 object-cover inset-0 dark:invert opacity-80;
     }
   }
 }
