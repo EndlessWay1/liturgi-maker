@@ -58,19 +58,19 @@ type formType = {
 };
 
 const namaBulan = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
-  ];
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
 
 const formHead: formType[] = [
   {
@@ -83,19 +83,19 @@ const formHead: formType[] = [
     id: "tema",
     field: "Tema",
     types: "text",
-    placeholder: "Tema"
+    placeholder: "Tema",
   },
   {
     id: "pendeta",
     field: "Pendeta",
     types: "text",
-    placeholder: "Pdt. John"
+    placeholder: "Pdt. John",
   },
   {
     id: "penatua",
     field: "Penatua",
     types: "text",
-    placeholder: "Pnt. Doe"
+    placeholder: "Pnt. Doe",
   },
 ];
 
@@ -164,28 +164,43 @@ const formSurat: formType[] = [
     id: "noSur",
     field: "Nomor Surat",
     types: "number",
-    placeholder: 'Nomor Surat',
+    placeholder: "Nomor Surat",
   },
   {
     id: "month",
     field: "Bulan Tujuan",
     types: "",
     month: namaBulan,
-    placeholder: "Bulan"
+    placeholder: "Bulan",
   },
   {
     id: "link-liturgi",
     field: "Link Liturgi",
     types: "text",
-    placeholder: "Link"
+    placeholder: "Link",
   },
   {
     id: "link-jadwal",
     field: "Link Jadwal Pendeta",
     types: "text",
-    placeholder: "Link"
+    placeholder: "Link",
   },
 ];
 
-export { navLinks, guide, formAyat, formLagu, formHead, formSurat };
+const aboutMe = [
+  {
+    id: "insta",
+    name: "nickson.k_",
+    img: "insta.svg",
+    link: "https://www.instagram.com/nickson.k_",
+  },
+  {
+    id: "github",
+    name: "EndlessWay1",
+    img: "github.png",
+    link: "https://github.com/EndlessWay1",
+  },
+];
+
+export { navLinks, guide, formAyat, formLagu, formHead, formSurat, aboutMe };
 export type { NavType };
