@@ -287,7 +287,7 @@ body {
     }
 
     #form-canvas {
-      @apply w-[50vw] border border-dark-100 dark:border-white-100 mx-auto p-0.5 rounded-xl outline outline-offset-2;
+      @apply w-[50vw] border border-dark-100 dark:border-white-100 mx-auto p-0.5 rounded-xl outline outline-offset-2 z-10;
 
       p {
         @apply text-red-400;
@@ -330,7 +330,7 @@ body {
     }
 
     #left-circle1 {
-      @apply absolute left-0 top-1/2 -translate-x-1/2 mult-bord w-[50vh] h-[50vh] rounded-full;
+      @apply absolute left-0 top-1/2 -translate-x-1/2 mult-bord w-[50vh] h-[50vh] rounded-full z-0;
 
       .circ1 {
         @apply mult-bord abs-center  w-[40vh] h-[40vh] rounded-full;
@@ -342,7 +342,7 @@ body {
     }
 
     #left-circle3 {
-      @apply absolute left-16 top-1/2 -translate-x-1/2 -translate-y-1/2 mult-bord w-[70vh] h-[70vh] rounded-full;
+      @apply absolute left-16 top-1/2 -translate-x-1/2 -translate-y-1/2 mult-bord w-[70vh] h-[70vh] rounded-full z-0;
 
       .circ1 {
         @apply mult-bord abs-center w-[60vh] h-[60vh] rounded-full;
@@ -354,7 +354,7 @@ body {
     }
 
     #left-circle2 {
-      @apply absolute -left-10 top-10 -translate-x-1/2  mult-bord w-[30vh] h-[30vh] rounded-full;
+      @apply absolute -left-10 top-10 -translate-x-1/2  mult-bord w-[30vh] h-[30vh] rounded-full z-0;
 
       .circ1 {
         @apply mult-bord abs-center  w-[20vh] h-[20vh] rounded-full;
@@ -362,7 +362,7 @@ body {
     }
 
     #right-circle1 {
-      @apply absolute -right-40 top-1/2 -translate-x-1/2 mult-bord w-[50vh] h-[50vh] rounded-full;
+      @apply absolute -right-40 top-1/2 -translate-x-1/2 mult-bord w-[50vh] h-[50vh] rounded-full z-0;
 
       .circ1 {
         @apply mult-bord abs-center  w-[40vh] h-[40vh] rounded-full;
@@ -374,7 +374,7 @@ body {
     }
 
     #right-circle3 {
-      @apply absolute -right-21 top-1/2 translate-x-1/2 -translate-y-1/2 mult-bord w-[70vh] h-[70vh] rounded-full;
+      @apply absolute -right-21 top-1/2 translate-x-1/2 -translate-y-1/2 mult-bord w-[70vh] h-[70vh] rounded-full z-0;
 
       .circ1 {
         @apply mult-bord abs-center w-[60vh] h-[60vh] rounded-full;
@@ -386,7 +386,7 @@ body {
     }
 
     #right-circle2 {
-      @apply absolute -right-10 top-10 -translate-x-1/2  mult-bord w-[30vh] h-[30vh] rounded-full;
+      @apply absolute -right-10 top-10 -translate-x-1/2  mult-bord w-[30vh] h-[30vh] rounded-full z-0;
 
       .circ1 {
         @apply mult-bord abs-center w-[20vh] h-[20vh] rounded-full;
