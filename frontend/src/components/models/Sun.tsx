@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 
-function Sun(props: b) {
+function Sun(props: JSX.IntrinsicElements["group"]) {
   return (
     <group {...props} dispose={null}>
       <mesh>
