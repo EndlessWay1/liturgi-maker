@@ -6,7 +6,10 @@ const pinoHTTP = require('pino-http');
 const config = require('./config');
 const logger = require('./logger')('app');
 const routes = require('../api/routes');
+const csrfMiddleware = require('../api/middleware/csrfMiddleware');
+
 const { errorResponder, errorTypes } = require('./errors');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -15,7 +18,14 @@ const app = express();
 app.enable('trust proxy');
 
 // Enable cross origin resource sharing to all origins by default
-app.use(cors());
+app.use(
+  cors({
+    origin: [process.env.ORIGIN, 'http://localhost:5173'],
+    methods: ['POST', 'GET'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'X-CSRF-Token'],
+  })
+);
 
 // Let you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it
 app.use(require('method-override')());
@@ -28,6 +38,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Log HTTP requests with Pino
 app.use(pinoHTTP({ logger }));
+
+// use cookie parser
+app.use(cookieParser());
+
+// use csrf
+app.use(csrfMiddleware);
 
 // API routes
 app.use(`${config.api.prefix}`, routes());

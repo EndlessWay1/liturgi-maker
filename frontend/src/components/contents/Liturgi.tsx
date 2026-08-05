@@ -5,26 +5,27 @@ import { useForm, type FieldValues } from "react-hook-form";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useCsrf } from "../../context/CSRFContext";
 
 function Liturgi() {
   const isMobile = useMediaQuery({ query: "(max-width: 1048px)" });
 
   const secRef = useRef(null);
- useGSAP(()=> {
-  gsap.to(".circ",{
-    autoAlpha: 0,
-    yoyo: true,
-    duration: 10,
-    repeat:-1,
-    stagger: {
-      amount: 10,
-      from: "center",
-      grid: "auto",
-      ease: "power2.inOut",
+  useGSAP(() => {
+    gsap.to(".circ", {
+      autoAlpha: 0,
+      yoyo: true,
+      duration: 10,
       repeat: -1,
-    },
-  });
- },[])
+      stagger: {
+        amount: 10,
+        from: "center",
+        grid: "auto",
+        ease: "power2.inOut",
+        repeat: -1,
+      },
+    });
+  }, []);
 
   const {
     register,
@@ -34,6 +35,8 @@ function Liturgi() {
   } = useForm<FieldValues>();
 
   const [Load, setLoad] = useState(false);
+
+  const { csrf } = useCsrf();
 
   const onSubmit = async (e: FieldValues) => {
     setLoad(true);
@@ -79,6 +82,7 @@ function Liturgi() {
         setLoad(false);
         return;
       }
+      console.log(res);
 
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
@@ -105,6 +109,7 @@ function Liturgi() {
       <h1>Liturgi Generator</h1>
       <div id='form-canvas'>
         <form action='#' method='post' onSubmit={handleSubmit(onSubmit)}>
+          <input type='hidden' value={csrf} />
           <div id='form-sect'>
             <h2>Heading Section</h2>
             <div
@@ -155,7 +160,7 @@ function Liturgi() {
                 "form-content",
               )}
             >
-              {formLagu.map(({ id, field, types,placeholder }) => (
+              {formLagu.map(({ id, field, types, placeholder }) => (
                 <div key={id}>
                   <h3>{field}:</h3>
                   {errors[field] && <p>{String(errors[field]?.message)}</p>}

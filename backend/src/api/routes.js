@@ -1,17 +1,24 @@
 const express = require('express');
 
-const books = require('./components/books/books-route');
-const users = require('./components/users/users-route');
-const gachaItems = require('./components/gacha/items/gacha-items-route');
-const gachaUsers = require('./components/gacha/users/gacha-users-route');
+const songsRoute = require('./components/songs/songs-route');
 
 module.exports = () => {
   const app = express.Router();
 
-  books(app);
-  gachaUsers(app);
-  users(app);
-  gachaItems(app);
+  app.get('/csrf-token', async (req, res) => {
+    res.json({ csrfToken: req.cookies.csrf_token_client });
+  });
+
+  app.post('/', (req, res) => {
+    res
+      .status(403)
+      .json({ 'Nomor Surat': 'Harus Angka', 'Bulan Tujuan': 'Harus Januari' });
+  });
+
+  songsRoute(app);
+
+  // books(app);
+  // users(app);
 
   return app;
 };

@@ -161,6 +161,11 @@ const errorTypes = {
     status: 500,
     code: 'DB_ERROR',
   },
+  NO_SONG: {
+    description: 'No songs in the database',
+    status: 404,
+    code: 'NO_SONG',
+  },
 };
 
 const errorResponder = (errorType, message = '') => {

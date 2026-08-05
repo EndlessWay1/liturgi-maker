@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { formSurat } from "../../constants";
+import { useCsrf } from "../../context/CSRFContext";
 
 export function Surat() {
   const isMobile = useMediaQuery({ query: "(max-width: 1048px)" });
@@ -17,18 +18,21 @@ export function Surat() {
   } = useForm<FieldValues>();
 
   const [Load, setLoad] = useState(false);
+  const { csrf } = useCsrf();
 
   const onSubmit = async (e: FieldValues) => {
     setLoad(true);
-    const urls = "https://liturgi-maker-nbc1.vercel.app";
-    const path = "/api/gatcha";
+    const urls = "http://localhost:5000";
+    const path = "/api/songs/";
     try {
       const res = await fetch(urls + path, {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRF-Token": csrf,
         },
-        body: JSON.stringify(e),
+        credentials: "include",
+        // body: JSON.stringify(e),
       });
       // Handle HTTP error statuses (like 400 or 500)
       if (!res.ok) {
@@ -60,18 +64,19 @@ export function Surat() {
           });
         }
         setLoad(false);
+        // console.log(await res.json());
         return;
       }
-
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${e.Tanggal}.txt`; // Target filename
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      console.log(await res.json());
+      // const blob = await res.blob();
+      // const url = window.URL.createObjectURL(blob);
+      // const a = document.createElement("a");
+      // a.href = url;
+      // a.download = `${e.Tanggal}.txt`; // Target filename
+      // document.body.appendChild(a);
+      // a.click();
+      // a.remove();
+      // window.URL.revokeObjectURL(url);
       setLoad(false);
     } catch (err) {
       // Catch network failures OR errors thrown in the 'if (!response.ok)' block
@@ -137,7 +142,6 @@ export function Surat() {
                       required
                       min={1}
                       {...register(field)}
-
                     />
                   )}
                 </div>
