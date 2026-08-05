@@ -12,18 +12,24 @@ function CsrfProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function loadCsrf() {
-      const res = await fetch("http://localhost:5000/api/csrf-token", {
-        method: "GET",
-        credentials: "include",
-      });
-
+      console.log(import.meta.env.VITE_BACKEND_URL + "/api/csrf-token");
+      const res = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/api/csrf-token",
+        {
+          credentials: "include",
+          method: "GET",
+        },
+      );
+      // console.log(await res.text());
+      console.log(res.status);
+      console.log(res.ok);
+      console.log(res.headers.get("content-type"));
       const data = await res.json();
+      console.log(data);
       setCsrf(data.csrfToken); // whatever your backend returns
-      console.log(data.csrfToken);
     }
     loadCsrf();
-  },[setCsrf]);
-  
+  }, [setCsrf]);
 
   return (
     <CsrfContext.Provider value={{ csrf }}>{children}</CsrfContext.Provider>

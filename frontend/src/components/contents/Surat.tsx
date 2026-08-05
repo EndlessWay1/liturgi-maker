@@ -20,9 +20,9 @@ export function Surat() {
   const [Load, setLoad] = useState(false);
   const { csrf } = useCsrf();
 
-  const onSubmit = async (e: FieldValues) => {
+  const onSubmit = async () => {
     setLoad(true);
-    const urls = "http://localhost:5000";
+    const urls = import.meta.env.VITE_BACKEND_URL;
     const path = "/api/songs/";
     try {
       const res = await fetch(urls + path, {

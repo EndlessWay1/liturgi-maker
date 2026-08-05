@@ -40,8 +40,8 @@ function Liturgi() {
 
   const onSubmit = async (e: FieldValues) => {
     setLoad(true);
-    const urls = "https://liturgi-maker-nbc1.vercel.app";
-    const path = "/api/gatcha";
+    const urls = import.meta.env.VITE_BACKEND_URL;
+    const path = "/api/songs/KJ/40";
     try {
       const res = await fetch(urls + path, {
         method: "POST",

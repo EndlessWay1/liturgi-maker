@@ -4,8 +4,5 @@
       "source": "/(.*)",
       "destination": "/api/index.js"
     }
-  ],
-  "engines": {
-    "node": "22.x"
-  }
+  ]
 }
