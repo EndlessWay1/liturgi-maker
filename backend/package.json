@@ -11,6 +11,10 @@
   },
   "author": "Nickson",
   "license": "ISC",
+
+  "overrides": {
+    "html-encoding-sniffer": "5.0.0"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
