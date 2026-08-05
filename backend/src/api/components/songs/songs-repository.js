@@ -1,6 +1,6 @@
-import models from '../../../models/index.js';
+import dbExports from '../../../models/index.js';
 
-const { Songs } = models;
+const { Songs } = dbExports;
 
 async function getSongs() {
   return Songs.find({});
