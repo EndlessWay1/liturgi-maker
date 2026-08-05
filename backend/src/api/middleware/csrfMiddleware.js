@@ -31,6 +31,8 @@ const csrfMiddleware = (req, res, next) => {
         secure: true,
         sameSite: 'None',
       });
+
+      req.csrfToken = token;
     }
 
     return next();
