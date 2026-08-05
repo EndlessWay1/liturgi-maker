@@ -1,8 +1,8 @@
-const express = require('express');
+import express from  'express';
 
-const songsRoute = require('./components/songs/songs-route');
+import songsRoute from './components/songs/songs-route.js';
 
-module.exports = () => {
+export default () => {
   const app = express.Router();
 
   app.get('/csrf-token', async (req, res) => {

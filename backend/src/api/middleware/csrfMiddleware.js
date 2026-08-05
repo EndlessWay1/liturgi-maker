@@ -1,7 +1,7 @@
 // csrfMiddleware.js
 
-const crypto = require('crypto');
-const { errorResponder, errorTypes } = require('../../core/errors');
+import crypto from 'crypto';
+import { errorResponder, errorTypes } from '../../core/errors.js';
 
 /**
  * Custom CSRF Middleware
@@ -61,4 +61,4 @@ const csrfMiddleware = (req, res, next) => {
   next();
 };
 
-module.exports = csrfMiddleware;
+export default csrfMiddleware;

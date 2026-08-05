@@ -1,4 +1,4 @@
-module.exports = (db) => {
+export default (db) => {
   const LyricSchema = new db.Schema(
     {
       number: String,

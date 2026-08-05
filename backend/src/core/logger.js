@@ -1,6 +1,6 @@
-const pino = require('pino');
+import pino from 'pino';
 
-module.exports = (appName) => {
+export default (appName) => {
   const options = {
     name: appName,
     formatters: {

@@ -1,4 +1,6 @@
-const { Songs } = require('../../../models');
+import models from '../../../models/index.js';
+
+const { Songs } = models;
 
 async function getSongs() {
   return Songs.find({});
@@ -16,9 +18,4 @@ async function createSong(songs) {
   return Songs.create(songs);
 }
 
-module.exports = {
-  getSongs,
-  getSongByBookNum,
-  createSong,
-  songExist,
-};
+export { getSongs, getSongByBookNum, createSong, songExist };

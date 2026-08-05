@@ -1,10 +1,10 @@
-const express = require('express');
-const { getSongs, insertDB } = require('./songs-controller');
-const { getSongs: song } = require('./songs-repository');
+import express from 'express';
+import { getSongs, insertDB } from './songs-controller.js';
+import {getSongs as song} from './songs-repository.js';
 
 const route = express.Router();
 
-module.exports = (app) => {
+export default (app) => {
   app.use('/songs', route);
 
   route.get('/', async (req, res) => res.status(200).json(await song()));

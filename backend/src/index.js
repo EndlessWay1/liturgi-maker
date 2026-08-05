@@ -1,6 +1,9 @@
-const { env, port } = require('./core/config');
-const logger = require('./core/logger')('app');
-const server = require('./core/server');
+import { env, port } from './core/config.js';
+
+import loggs from './core/logger.js';
+import server from './core/server.js';
+
+const logger = loggs('app');
 
 const app = server.listen(port, (err) => {
   if (err) {

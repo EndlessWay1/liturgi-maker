@@ -180,7 +180,7 @@ const errorResponder = (errorType, message = '') => {
   return error;
 };
 
-module.exports = {
+export {
   errorTypes,
   errorResponder,
 };

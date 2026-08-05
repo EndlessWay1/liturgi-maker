@@ -2,9 +2,9 @@
 // get song lyrics
 
 // eslint-disable-next-line import/extensions
-const { JSDOM } = require('jsdom');
-const { errorResponder, errorTypes } = require('../../../core/errors');
-const { createSong, songExist } = require('./songs-repository');
+import { JSDOM } from 'jsdom';
+import { errorResponder, errorTypes } from '../../../core/errors.js';
+import { createSong, songExist } from'./songs-repository.js';
 
 const parseSong = async (book, num) => {
   const response = await fetch(`https://alkitab.app/${book}/${num}`);
@@ -67,4 +67,4 @@ const putAllSongsInBook = async (book, lim) => {
   return { created, skipped, failed };
 };
 
-module.exports = { parseSong, putAllSongsInBook };
+export { parseSong, putAllSongsInBook };

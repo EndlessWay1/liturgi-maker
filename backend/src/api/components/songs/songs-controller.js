@@ -1,5 +1,5 @@
-const { errorResponder, errorTypes } = require('../../../core/errors');
-const { parseSongs, putAllSongsInBook } = require('./songs-service');
+import { errorResponder, errorTypes } from '../../../core/errors.js';
+import { parseSong, putAllSongsInBook } from './songs-service.js';
 
 async function getSongs(req, res, next) {
   const { book, num } = req.params;
@@ -40,4 +40,4 @@ async function insertDB(req, res, next) {
   }
 }
 
-module.exports = { getSongs, insertDB };
+export { getSongs, insertDB };

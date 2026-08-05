@@ -1,15 +1,19 @@
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const express = require('express');
-const pinoHTTP = require('pino-http');
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
+import pinoHTTP from 'pino-http';
+import config from './config.js';
+import logs from './logger.js';
+import methodOverride from 'method-override';
 
-const config = require('./config');
-const logger = require('./logger')('app');
-const routes = require('../api/routes');
-const csrfMiddleware = require('../api/middleware/csrfMiddleware');
 
-const { errorResponder, errorTypes } = require('./errors');
-const cookieParser = require('cookie-parser');
+const logger = logs('app');
+
+import routes from '../api/routes.js';
+import csrfMiddleware from '../api/middleware/csrfMiddleware.js';
+
+import { errorResponder, errorTypes } from './errors.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -28,7 +32,8 @@ app.use(
 );
 
 // Let you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it
-app.use(require('method-override')());
+app.use(methodOverride());
+
 
 // Middleware that transforms the raw string of request.body into JSON
 app.use(bodyParser.json());
@@ -82,4 +87,4 @@ app.use((error, request, response, next) =>
   })
 );
 
-module.exports = app;
+export default app;
