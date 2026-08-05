@@ -23,11 +23,13 @@ const csrfMiddleware = (req, res, next) => {
 
       res.cookie('csrf_token', hashToken(token), {
         httpOnly: true,
-        sameSite: 'Strict',
+        secure: true,
+        sameSite: 'None',
       });
 
       res.cookie('csrf_token_client', token, {
-        sameSite: 'Strict',
+        secure: true,
+        sameSite: 'None',
       });
     }
 
