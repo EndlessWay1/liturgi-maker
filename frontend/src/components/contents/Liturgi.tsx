@@ -136,11 +136,7 @@ function Liturgi() {
     // regex
     const tanggalRegex = /^(\d+)-(\d+)-(\d+)$/;
 
-    const target = [
-      "Tanggal",
-      "Link Liturgi",
-      "Link Jadwal Pendeta",
-    ];
+    const target = ["Tanggal", "Link Liturgi", "Link Jadwal Pendeta"];
 
     // clear all errors
     clearErrors([...target, "root"]);
@@ -252,9 +248,18 @@ function Liturgi() {
       }),
     );
 
-
     setAutofill(false);
   };
+
+  useEffect(() => {
+    if (autofill) {
+      const url = "#liturgi";
+      const a = document.createElement("a");
+      a.href = url;
+      a.click();
+      a.remove();
+    }
+  }, [autofill]);
 
   return (
     <section
