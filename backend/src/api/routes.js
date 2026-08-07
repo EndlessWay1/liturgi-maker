@@ -1,6 +1,13 @@
-import express from  'express';
+import express from 'express';
 
-import songsRoute from './components/songs/songs-route.js';
+import songsRoute from './components/parser/songs/songs-route.js';
+
+import ayatController from './components/parser/ayat/ayat-controller.js';
+
+import {
+  docsJadwal,
+  docsLiturgi,
+} from './components/parser/docs/docs-controller.js';
 
 export default () => {
   const app = express.Router();
@@ -9,16 +16,12 @@ export default () => {
     res.json({ csrfToken: req.cookies.csrf_token_client });
   });
 
-  app.post('/', (req, res) => {
-    res
-      .status(403)
-      .json({ 'Nomor Surat': 'Harus Angka', 'Bulan Tujuan': 'Harus Januari' });
-  });
+  app.get('/liturgi', docsLiturgi);
+  app.get('/jadwal', docsJadwal);
+
+  app.get('/ayat/:book', ayatController);
 
   songsRoute(app);
-
-  // books(app);
-  // users(app);
 
   return app;
 };

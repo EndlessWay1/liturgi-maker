@@ -24,7 +24,7 @@ app.enable('trust proxy');
 // Enable cross origin resource sharing to all origins by default
 app.use(
   cors({
-    origin: [process.env.ORIGIN, 'http://localhost:5173'],
+    origin: process.env.ORIGIN,
     methods: ['POST', 'GET'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'X-CSRF-Token'],
@@ -42,7 +42,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Log HTTP requests with Pino
-app.use(pinoHTTP({ logger }));
+// app.use(pinoHTTP({ logger }));
 
 // use cookie parser
 app.use(cookieParser());

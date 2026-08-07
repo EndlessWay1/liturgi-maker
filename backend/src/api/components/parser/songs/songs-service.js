@@ -3,7 +3,7 @@
 
 // eslint-disable-next-line import/extensions
 import { JSDOM } from 'jsdom';
-import { errorResponder, errorTypes } from '../../../core/errors.js';
+import { errorResponder, errorTypes } from '../../../../core/errors.js';
 import { createSong, getSongByBookNum, songExist } from './songs-repository.js';
 
 const parseSong = async (book, num) => {
@@ -15,7 +15,7 @@ const parseSong = async (book, num) => {
 
   const response = await fetch(`https://alkitab.app/${book}/${num}`);
   if (!response.ok) {
-    throw errorResponder(errorTypes.NO_SONG);
+    throw errorResponder(errorTypes.FETCH_ERROR, 'Error fetching songs');
   }
 
   const bodys = await response.text();

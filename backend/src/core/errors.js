@@ -166,6 +166,31 @@ const errorTypes = {
     status: 404,
     code: 'NO_SONG',
   },
+  NO_PASSAGE: {
+    description: 'Passage doesn\'t exist',
+    status: 422,
+    code: 'NO_PASSAGE',
+  },
+  NO_DOCS: {
+    description: 'Error making the docs',
+    status: 404,
+    code: 'NO_DOCS',
+  },
+  PARSE_DOCS: {
+    description: 'Error parsing the docs link',
+    status: 404,
+    code: 'PARSE_DOCS',
+  },
+  FETCH_ERROR: {
+    description: 'Error fetching link',
+    status: 404,
+    code: 'FETCH_ERROR',
+  },
+  NO_LINK: {
+    description: 'No link received',
+    status: 422,
+    code: 'LINK_ERROR',
+  },
 };
 
 const errorResponder = (errorType, message = '') => {

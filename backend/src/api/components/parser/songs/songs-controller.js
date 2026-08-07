@@ -1,4 +1,4 @@
-import { errorResponder, errorTypes } from '../../../core/errors.js';
+import { errorResponder, errorTypes } from '../../../../core/errors.js';
 import { parseSong, putAllSongsInBook } from './songs-service.js';
 
 async function getSongs(req, res, next) {
@@ -10,7 +10,6 @@ async function getSongs(req, res, next) {
         'Book or Num is Null'
       );
     }
-
 
     return res.status(200).json(await parseSongs(book, num));
   } catch (error) {

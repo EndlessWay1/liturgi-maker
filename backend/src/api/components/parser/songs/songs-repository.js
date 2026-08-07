@@ -1,4 +1,4 @@
-import dbExports from '../../../models/index.js';
+import dbExports from '../../../../models/index.js';
 
 const { Songs } = dbExports;
 
