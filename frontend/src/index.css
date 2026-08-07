@@ -280,7 +280,7 @@ body {
   }
 
   #liturgi {
-    @apply text-colors bg-colors h-fit pb-10 relative radial-gradient flex flex-col gap-16;
+    @apply text-colors bg-colors pb-10 relative radial-gradient flex flex-col gap-16;
 
     h1 {
       @apply text-title text-center pt-20;
@@ -298,6 +298,7 @@ body {
         h2 {
           @apply font-semibold text-xl md:text-3xl my-auto;
         }
+        
         .form-content {
           @apply -mt-2 gap-4;
           div {

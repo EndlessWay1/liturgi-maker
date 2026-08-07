@@ -151,6 +151,9 @@ export function Surat() {
           {errors.root && (
             <p className='text-center'>{String(errors.root.message)}</p>
           )}
+          {csrf === "" && (
+            <p className='text-center'>Please refresh the page.</p>
+          )}
           <div className='flex justify-center m-5'>
             <button
               type='submit'

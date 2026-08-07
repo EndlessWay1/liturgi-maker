@@ -55,6 +55,7 @@ type formType = {
   placeholder: string;
   types?: string;
   month?: string[];
+  value?: string;
 };
 
 const namaBulan = [
@@ -102,25 +103,25 @@ const formHead: formType[] = [
 const formAyat: formType[] = [
   {
     id: "firman",
-    field: "Firman",
+    field: "Ayat Firman",
     types: "text",
     placeholder: "Yohanes 3:16",
   },
   {
     id: "KP",
-    field: "Kata Pembuka",
+    field: "Ayat Kata Pembuka",
     types: "text",
     placeholder: "Yohanes 3:16",
   },
   {
     id: "BA",
-    field: "Berita Anugerah",
+    field: "Ayat Berita Anugerah",
     types: "text",
     placeholder: "Yohanes 3:16",
   },
   {
     id: "persembahan",
-    field: "Persembahan",
+    field: "Ayat Persembahan",
     types: "text",
     placeholder: "Yohanes 3:16",
   },
@@ -129,32 +130,32 @@ const formAyat: formType[] = [
 const formLagu: formType[] = [
   {
     id: "1",
-    field: "Votum",
+    field: "Lagu Votum",
     placeholder: 'KJ 40:1-2 "Ajaib Benar Anugerah"',
   },
   {
     id: "2",
-    field: "Kata Pembuka",
+    field: "Lagu Kata Pembuka",
     placeholder: 'KJ 40:1-2 "Ajaib Benar Anugerah"',
   },
   {
     id: "3",
-    field: "Pengakuan Dosa",
+    field: "Lagu Pengakuan Dosa",
     placeholder: 'KJ 40:1-2 "Ajaib Benar Anugerah"',
   },
   {
     id: "4",
-    field: "Berita Anugerah",
+    field: "Lagu Berita Anugerah",
     placeholder: 'KJ 40:1-2 "Ajaib Benar Anugerah"',
   },
   {
     id: "5",
-    field: "Persembahan",
+    field: "Lagu Persembahan",
     placeholder: 'KJ 40:1-2 "Ajaib Benar Anugerah"',
   },
   {
     id: "6",
-    field: "Pengutusan",
+    field: "Lagu Pengutusan",
     placeholder: 'KJ 40:1-2 "Ajaib Benar Anugerah"',
   },
 ];
@@ -187,6 +188,426 @@ const formSurat: formType[] = [
   },
 ];
 
+const formAutofill: formType[] = [
+  {
+    id: "auto-link-liturgi",
+    field: "Link Liturgi",
+    types: "text",
+    placeholder: "Link",
+  },
+  {
+    id: "auto-link-jadwal",
+    field: "Link Jadwal Pendeta",
+    types: "text",
+    placeholder: "Link",
+  },
+  {
+    id: "tanggal",
+    field: "Tanggal",
+    types: "date",
+    placeholder: "",
+  },
+];
+
+const PassageList = [
+  {
+    no: 1,
+    abbr: "Kej",
+    name: "Kejadian",
+    chapter: 50,
+  },
+  {
+    no: 2,
+    abbr: "Kel",
+    name: "Keluaran",
+    chapter: 40,
+  },
+  {
+    no: 3,
+    abbr: "Ima",
+    name: "Imamat",
+    chapter: 27,
+  },
+  {
+    no: 4,
+    abbr: "Bil",
+    name: "Bilangan",
+    chapter: 36,
+  },
+  {
+    no: 5,
+    abbr: "Ula",
+    name: "Ulangan",
+    chapter: 34,
+  },
+  {
+    no: 6,
+    abbr: "Yos",
+    name: "Yosua",
+    chapter: 24,
+  },
+  {
+    no: 7,
+    abbr: "Hak",
+    name: "Hakim-hakim",
+    chapter: 21,
+  },
+  {
+    no: 8,
+    abbr: "Rut",
+    name: "Rut",
+    chapter: 4,
+  },
+  {
+    no: 9,
+    abbr: "1 Sam",
+    name: "1 Samuel",
+    chapter: 31,
+  },
+  {
+    no: 10,
+    abbr: "2 Sam",
+    name: "2 Samuel",
+    chapter: 24,
+  },
+  {
+    no: 11,
+    abbr: "1 Raj",
+    name: "1 Raja-Raja",
+    chapter: 22,
+  },
+  {
+    no: 12,
+    abbr: "2 Raj",
+    name: "2 Raja-Raja",
+    chapter: 25,
+  },
+  {
+    no: 13,
+    abbr: "1 Taw",
+    name: "1 Tawarikh",
+    chapter: 29,
+  },
+  {
+    no: 14,
+    abbr: "2 Taw",
+    name: "2 Tawarikh",
+    chapter: 36,
+  },
+  {
+    no: 15,
+    abbr: "Ezr",
+    name: "Ezra",
+    chapter: 10,
+  },
+  {
+    no: 16,
+    abbr: "Neh",
+    name: "Nehemia",
+    chapter: 13,
+  },
+  {
+    no: 17,
+    abbr: "Est",
+    name: "Ester",
+    chapter: 10,
+  },
+  {
+    no: 18,
+    abbr: "Ayb",
+    name: "Ayub",
+    chapter: 42,
+  },
+  {
+    no: 19,
+    abbr: "Maz",
+    name: "Mazmur",
+    chapter: 150,
+  },
+  {
+    no: 20,
+    abbr: "Ams",
+    name: "Amsal",
+    chapter: 31,
+  },
+  {
+    no: 21,
+    abbr: "Pkh",
+    name: "Pengkhotbah",
+    chapter: 12,
+  },
+  {
+    no: 22,
+    abbr: "Kid",
+    name: "Kidung Agung",
+    chapter: 8,
+  },
+  {
+    no: 23,
+    abbr: "Yes",
+    name: "Yesaya",
+    chapter: 66,
+  },
+  {
+    no: 24,
+    abbr: "Yer",
+    name: "Yeremia",
+    chapter: 52,
+  },
+  {
+    no: 25,
+    abbr: "Rat",
+    name: "Ratapan",
+    chapter: 5,
+  },
+  {
+    no: 26,
+    abbr: "Yeh",
+    name: "Yehezkiel",
+    chapter: 48,
+  },
+  {
+    no: 27,
+    abbr: "Dan",
+    name: "Daniel",
+    chapter: 12,
+  },
+  {
+    no: 28,
+    abbr: "Hos",
+    name: "Hosea",
+    chapter: 14,
+  },
+  {
+    no: 29,
+    abbr: "Yoe",
+    name: "Yoel",
+    chapter: 3,
+  },
+  {
+    no: 30,
+    abbr: "Amo",
+    name: "Amos",
+    chapter: 9,
+  },
+  {
+    no: 31,
+    abbr: "Oba",
+    name: "Obaja",
+    chapter: 1,
+  },
+  {
+    no: 32,
+    abbr: "Yun",
+    name: "Yunus",
+    chapter: 4,
+  },
+  {
+    no: 33,
+    abbr: "Mik",
+    name: "Mikha",
+    chapter: 7,
+  },
+  {
+    no: 34,
+    abbr: "Nah",
+    name: "Nahum",
+    chapter: 3,
+  },
+  {
+    no: 35,
+    abbr: "Hab",
+    name: "Habakuk",
+    chapter: 3,
+  },
+  {
+    no: 36,
+    abbr: "Zef",
+    name: "Zefanya",
+    chapter: 3,
+  },
+  {
+    no: 37,
+    abbr: "Hag",
+    name: "Hagai",
+    chapter: 2,
+  },
+  {
+    no: 38,
+    abbr: "Zak",
+    name: "Zakharia",
+    chapter: 14,
+  },
+  {
+    no: 39,
+    abbr: "Mal",
+    name: "Maleakhi",
+    chapter: 4,
+  },
+  {
+    no: 40,
+    abbr: "Mat",
+    name: "Matius",
+    chapter: 28,
+  },
+  {
+    no: 41,
+    abbr: "Mar",
+    name: "Markus",
+    chapter: 16,
+  },
+  {
+    no: 42,
+    abbr: "Luk",
+    name: "Lukas",
+    chapter: 24,
+  },
+  {
+    no: 43,
+    abbr: "Yoh",
+    name: "Yohanes",
+    chapter: 21,
+  },
+  {
+    no: 44,
+    abbr: "Kis",
+    name: "Kisah Para Rasul",
+    chapter: 28,
+  },
+  {
+    no: 45,
+    abbr: "Rom",
+    name: "Roma",
+    chapter: 16,
+  },
+  {
+    no: 46,
+    abbr: "1 Kor",
+    name: "1 Korintus",
+    chapter: 16,
+  },
+  {
+    no: 47,
+    abbr: "2 Kor",
+    name: "2 Korintus",
+    chapter: 13,
+  },
+  {
+    no: 48,
+    abbr: "Gal",
+    name: "Galatia",
+    chapter: 6,
+  },
+  {
+    no: 49,
+    abbr: "Efe",
+    name: "Efesus",
+    chapter: 6,
+  },
+  {
+    no: 50,
+    abbr: "Flp",
+    name: "Filipi",
+    chapter: 4,
+  },
+  {
+    no: 51,
+    abbr: "Kol",
+    name: "Kolose",
+    chapter: 4,
+  },
+  {
+    no: 52,
+    abbr: "1 Tes",
+    name: "1 Tesalonika",
+    chapter: 5,
+  },
+  {
+    no: 53,
+    abbr: "2 Tes",
+    name: "2 Tesalonika",
+    chapter: 3,
+  },
+  {
+    no: 54,
+    abbr: "1 Tim",
+    name: "1 Timotius",
+    chapter: 6,
+  },
+  {
+    no: 55,
+    abbr: "2 Tim",
+    name: "2 Timotius",
+    chapter: 4,
+  },
+  {
+    no: 56,
+    abbr: "Tit",
+    name: "Titus",
+    chapter: 3,
+  },
+  {
+    no: 57,
+    abbr: "Flm",
+    name: "Filemon",
+    chapter: 1,
+  },
+  {
+    no: 58,
+    abbr: "Ibr",
+    name: "Ibrani",
+    chapter: 13,
+  },
+  {
+    no: 59,
+    abbr: "Yak",
+    name: "Yakobus",
+    chapter: 5,
+  },
+  {
+    no: 60,
+    abbr: "1 Pet",
+    name: "1 Petrus",
+    chapter: 5,
+  },
+  {
+    no: 61,
+    abbr: "2 Pet",
+    name: "2 Petrus",
+    chapter: 3,
+  },
+  {
+    no: 62,
+    abbr: "1 Yoh",
+    name: "1 Yohanes",
+    chapter: 5,
+  },
+  {
+    no: 63,
+    abbr: "2 Yoh",
+    name: "2 Yohanes",
+    chapter: 1,
+  },
+  {
+    no: 64,
+    abbr: "3 Yoh",
+    name: "3 Yohanes",
+    chapter: 1,
+  },
+  {
+    no: 65,
+    abbr: "Yud",
+    name: "Yudas",
+    chapter: 1,
+  },
+  {
+    no: 66,
+    abbr: "Wah",
+    name: "Wahyu",
+    chapter: 22,
+  },
+];
+
 const aboutMe = [
   {
     id: "insta",
@@ -202,5 +623,15 @@ const aboutMe = [
   },
 ];
 
-export { navLinks, guide, formAyat, formLagu, formHead, formSurat, aboutMe };
+export {
+  navLinks,
+  guide,
+  formAyat,
+  formLagu,
+  formHead,
+  formSurat,
+  aboutMe,
+  formAutofill,
+  PassageList,
+};
 export type { NavType };
