@@ -1,5 +1,12 @@
 import { useMediaQuery } from "react-responsive";
-import { formAutofill, formAyat, formHead, formLagu } from "../../constants";
+import {
+  formAutofill,
+  formAyat,
+  formHead,
+  formLagu,
+  PassageList,
+  namaBulan,
+} from "../../constants";
 import clsx from "clsx";
 import { useForm, type FieldValues } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
@@ -10,7 +17,49 @@ import { useCsrf } from "../../context/CSRFContext";
 function Liturgi() {
   const isMobile = useMediaQuery({ query: "(max-width: 1048px)" });
 
-  const secRef = useRef(null);
+  const [autofill, setAutofill] = useState(false);
+
+  const [formHeader, setformHeader] = useState(formHead);
+  const [formAyats, setformAyats] = useState(formAyat);
+  const [formLagus, setformLagus] = useState(formLagu);
+
+  const [Load, setLoad] = useState(false);
+
+  const notMounted = useRef(true);
+
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<FieldValues>();
+
+  const { csrf } = useCsrf();
+
+  const passageMap: { [key: string]: string } = {};
+  for (const i of PassageList) {
+    const abbrs = i.abbr.toLowerCase();
+    passageMap[i.name.toLowerCase()] = abbrs;
+  }
+  console.log(passageMap);
+
+  const passageRegex = /^(\d+)?(?:\s+|%20)?([^0-9:]+)*/;
+  const tanggalRegex = /^(\d+)-(\d+)-(\d+)$/;
+
+  // for clean resizing window feat
+  useEffect(() => {
+    if (notMounted.current) {
+      notMounted.current = false;
+    }
+    const url = "#liturgi";
+    const a = document.createElement("a");
+    a.href = url;
+    a.click();
+    a.remove();
+  }, [autofill]);
+
   useGSAP(() => {
     gsap.to(".circ", {
       autoAlpha: 0,
@@ -27,18 +76,24 @@ function Liturgi() {
     });
   }, []);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    setError,
-    clearErrors,
-    formState: { errors },
-  } = useForm<FieldValues>();
+  // convert ayat into abbr type if not already
+  const nameToAbbr = (ayat: string) => {
+    const lowAyat = ayat.toLowerCase();
+    const matches = lowAyat.match(passageRegex);
+    if (matches) {
+      console.log(matches);
+      // console.log(
+      //   lowAyat.replace(matches[1], passageMap[matches[1]] ?? matches[1]),
+      // );
 
-  const [Load, setLoad] = useState(false);
-
-  const { csrf } = useCsrf();
+      const ayats =
+        (matches[1] ? matches[1] + " " : "") + matches[2].toLowerCase().trim();
+      const ress = passageMap[ayats];
+      const ayatToBeReplace = matches[1] ? ress.substring(2) : ress;
+      return lowAyat.replace(matches[2], ayatToBeReplace);
+    }
+    return lowAyat;
+  };
 
   // only fetch from backend API,not other API
   const tryFetch = async (link: string, method: string, bodys?: object) => {
@@ -98,20 +153,27 @@ function Liturgi() {
     }
   };
 
+  // func for submit
   const onSubmit = async (e: FieldValues) => {
     const res = await tryFetch(
       import.meta.env.VITE_BACKEND_URL + "/api/docs/liturgi",
       "POST",
+      e,
     );
 
     console.log(res);
 
     const blob = await res?.blob();
     if (blob) {
+      const date = e.Tanggal.match(tanggalRegex);
+
+      const year = date[1];
+      const mon = namaBulan[Number(date[2]) - 1];
+      const day = Number(date[3]);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${e.Tanggal}.txt`; // Target filename
+      a.download = `Liturgi Remaja - ${year} ${mon} ${day}.docs`; // Target filename
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -125,16 +187,9 @@ function Liturgi() {
     setLoad(false);
   };
 
-  const [autofill, setAutofill] = useState(false);
-
-  const [formHeader, setformHeader] = useState(formHead);
-
-  const [formAyats, setformAyats] = useState(formAyat);
-  const [formLagus, setformLagus] = useState(formLagu);
-
+  // autoFill func for onClick
   const onAutoFillSubmit = async () => {
     // regex
-    const tanggalRegex = /^(\d+)-(\d+)-(\d+)$/;
 
     const target = ["Tanggal", "Link Liturgi", "Link Jadwal Pendeta"];
 
@@ -217,10 +272,10 @@ function Liturgi() {
     const filledValue: { [key: string]: string } = {
       Tema: litObj.Tema ?? "",
       Pendeta: jadObj ?? "",
-      "Ayat Firman": litObj["Ayat Firman"] ?? "",
-      "Ayat Kata Pembuka": litObj["Ayat KP"] ?? "",
-      "Ayat Berita Anugerah": litObj["Ayat BA"] ?? "",
-      "Ayat Persembahan": litObj["Ayat Persembahan"] ?? "",
+      "Ayat Firman": nameToAbbr(litObj["Ayat Firman"] ?? ""),
+      "Ayat Kata Pembuka": nameToAbbr(litObj["Ayat KP"] ?? ""),
+      "Ayat Berita Anugerah": nameToAbbr(litObj["Ayat BA"] ?? ""),
+      "Ayat Persembahan": nameToAbbr(litObj["Ayat Persembahan"] ?? ""),
       "Lagu Votum": litObj.Lagu[1] ?? "",
       "Lagu Kata Pembuka": litObj.Lagu[2] ?? "",
       "Lagu Pengakuan Dosa": litObj.Lagu[3] ?? "",
@@ -251,22 +306,8 @@ function Liturgi() {
     setAutofill(false);
   };
 
-  useEffect(() => {
-    if (autofill) {
-      const url = "#liturgi";
-      const a = document.createElement("a");
-      a.href = url;
-      a.click();
-      a.remove();
-    }
-  }, [autofill]);
-
   return (
-    <section
-      id='liturgi'
-      ref={secRef}
-      className={clsx(autofill ? "h-dvh" : "h-fit")}
-    >
+    <section id='liturgi' className={clsx(autofill ? "h-dvh" : "h-fit")}>
       <h1>Liturgi Generator</h1>
       <div id='form-canvas'>
         <form action='#' method='post' onSubmit={handleSubmit(onSubmit)}>
@@ -339,6 +380,20 @@ function Liturgi() {
                   />
                 </div>
               ))}
+            </div>
+
+            <div
+              className='flex items-center mb-4 gap-4 mx-auto mt-5'
+              hidden={autofill}
+              id='checkbox'
+            >
+              <input
+                id='default-checkbox'
+                type='checkbox'
+                value=''
+                {...register("Pelayanan Pujian")}
+              />
+              <label htmlFor='default-checkbox'>Pelayanan Pujian</label>
             </div>
 
             <h2 hidden={!autofill}>Autofill</h2>

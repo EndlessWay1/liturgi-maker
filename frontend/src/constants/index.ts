@@ -31,7 +31,7 @@ const guide: guideType[] = [
     id: "guide2",
     subhead: "Ayat",
     text: "Format input diperhatikan. [NamaBuku] [pasal]:[ayat]",
-    example: "Yohanes 3:16, Yohanes 3:16,18, atau Yohanes 3:16-18,22-24",
+    example: "Yoh 3:16, yoh 3:16,18, atau YOH 3:16-18,22-24",
     styles:
       "right-0 not-md:right-0 top-[40%] md:top-[40%] opacity-0 translate-y-5",
   },
@@ -188,6 +188,8 @@ const formSurat: formType[] = [
   },
 ];
 
+
+// if edited or changed please change onAutoFillSubmit func
 const formAutofill: formType[] = [
   {
     id: "auto-link-liturgi",
@@ -623,6 +625,8 @@ const aboutMe = [
   },
 ];
 
+
+
 export {
   navLinks,
   guide,
@@ -633,5 +637,6 @@ export {
   aboutMe,
   formAutofill,
   PassageList,
+  namaBulan
 };
 export type { NavType };
