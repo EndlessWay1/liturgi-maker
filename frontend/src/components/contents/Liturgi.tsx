@@ -52,6 +52,7 @@ function Liturgi() {
   useEffect(() => {
     if (notMounted.current) {
       notMounted.current = false;
+      return;
     }
     const url = "#liturgi";
     const a = document.createElement("a");
