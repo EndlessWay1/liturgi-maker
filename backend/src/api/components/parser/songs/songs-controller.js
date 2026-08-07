@@ -1,6 +1,12 @@
 import { errorResponder, errorTypes } from '../../../../core/errors.js';
 import { parseSong, putAllSongsInBook } from './songs-service.js';
 
+const allBooks = [
+  { book: 'KJ', lim: 478 },
+  { book: 'PKJ', lim: 308 },
+  { book: 'NKB', lim: 230 },
+];
+
 async function getSongs(req, res, next) {
   const { book, num } = req.params;
   try {
@@ -23,12 +29,6 @@ async function insertDB(req, res, next) {
     if (books && Number(lims)) {
       return res.status(200).json(await putAllSongsInBook(books, Number(lims)));
     }
-
-    const allBooks = [
-      { book: 'KJ', lim: 478 },
-      { book: 'PKJ', lim: 308 },
-      { book: 'NKB', lim: 230 },
-    ];
 
     const results = await Promise.all(
       allBooks.map(({ book, lim }) => putAllSongsInBook(book, lim))

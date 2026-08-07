@@ -11,7 +11,9 @@ async function docsLiturgi(req, res, next) {
 
     res.status(200).json(parseLiturgi(data));
   } catch (err) {
-    return next(err);
+    return res
+      .status(err.statusCode ?? 404)
+      .json({ 'Link Liturgi': err.message || err.description });
   }
 }
 
@@ -25,7 +27,9 @@ async function docsJadwal(req, res, next) {
 
     res.status(200).json(parseJadwal(data));
   } catch (err) {
-    return next(err);
+    return res
+      .status(err.statusCode ?? 404)
+      .json({ 'Link Jadwal Pendeta': err.message || err.description });
   }
 }
 

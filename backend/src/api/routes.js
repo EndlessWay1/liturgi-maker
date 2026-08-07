@@ -16,8 +16,8 @@ export default () => {
     res.json({ csrfToken: req.cookies.csrf_token_client });
   });
 
-  app.get('/liturgi', docsLiturgi);
-  app.get('/jadwal', docsJadwal);
+  app.post('/liturgi', docsLiturgi);
+  app.post('/jadwal', docsJadwal);
 
   app.get('/ayat/:book', ayatController);
 
