@@ -9,7 +9,7 @@ import {
 } from "../../constants";
 import clsx from "clsx";
 import { useForm, type FieldValues } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useCsrf } from "../../context/CSRFContext";
