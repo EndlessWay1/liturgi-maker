@@ -25,7 +25,6 @@ function Liturgi() {
 
   const [Load, setLoad] = useState(false);
 
-  const notMounted = useRef(true);
 
   const {
     register,
@@ -43,7 +42,7 @@ function Liturgi() {
     const abbrs = i.abbr.toLowerCase();
     passageMap[i.name.toLowerCase()] = abbrs;
   }
-  console.log(passageMap);
+  // console.log(passageMap);
 
   const passageRegex = /^(\d+)?(?:\s+|%20)?([^0-9:]+)*/;
   const tanggalRegex = /^(\d+)-(\d+)-(\d+)$/;
