@@ -50,8 +50,7 @@ function Liturgi() {
 
   // for clean resizing window feat
   useEffect(() => {
-    if (notMounted.current) {
-      notMounted.current = false;
+    if (!autofill) {
       return;
     }
     const url = "#liturgi";

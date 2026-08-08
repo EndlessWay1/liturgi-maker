@@ -247,7 +247,7 @@ body {
     }
 
     #canvas {
-      @apply w-full! h-dvh! absolute inset-0 z-[-1] bg-dark-200 font-felipa;
+      @apply w-full! h-dvh! absolute inset-0 z-[-1] bg-dark-200;
     }
   }
 
