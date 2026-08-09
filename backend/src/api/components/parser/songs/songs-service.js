@@ -47,6 +47,7 @@ const parseSong = async (book, num) => {
     })
     .filter(({ number }, idx) => !(number === 'reff' && idx > 1));
 
+  await createSong({ title, lyrics, book, number: num });
   return { title, lyrics, book, number: num };
 };
 

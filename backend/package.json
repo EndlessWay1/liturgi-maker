@@ -17,7 +17,7 @@
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
-    "docx": "^9.7.1",
+    "docxtemplater": "^3.69.3",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
@@ -25,7 +25,8 @@
     "method-override": "^3.0.0",
     "mongoose": "^8.12.2",
     "pino": "^9.6.0",
-    "pino-http": "^10.4.0"
+    "pino-http": "^10.4.0",
+    "pizzip": "^3.2.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.6.0",

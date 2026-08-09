@@ -2,12 +2,13 @@ import express from 'express';
 
 import songsRoute from './components/parser/songs/songs-route.js';
 
-import ayatController from './components/parser/ayat/ayat-controller.js';
+import { ayatController } from './components/parser/ayat/ayat-controller.js';
 
 import {
   docsJadwal,
   docsLiturgi,
 } from './components/parser/docs/docs-controller.js';
+import docsMakerRoute from './components/docs-maker/docs-maker-route.js';
 
 export default () => {
   const app = express.Router();
@@ -18,6 +19,8 @@ export default () => {
 
   app.post('/liturgi', docsLiturgi);
   app.post('/jadwal', docsJadwal);
+
+  docsMakerRoute(app);
 
   app.get('/ayat/:book', ayatController);
 

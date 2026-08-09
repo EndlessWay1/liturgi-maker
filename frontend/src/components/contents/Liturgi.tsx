@@ -4,48 +4,39 @@ import {
   formAyat,
   formHead,
   formLagu,
-  PassageList,
   namaBulan,
 } from "../../constants";
 import clsx from "clsx";
-import { useForm, type FieldValues } from "react-hook-form";
+import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useCsrf } from "../../context/CSRFContext";
 
 function Liturgi() {
-  const isMobile = useMediaQuery({ query: "(max-width: 1048px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
 
   const [autofill, setAutofill] = useState(false);
 
-  const [formHeader, setformHeader] = useState(formHead);
-  const [formAyats, setformAyats] = useState(formAyat);
-  const [formLagus, setformLagus] = useState(formLagu);
-
   const [Load, setLoad] = useState(false);
 
+  const [errorStatus, setErrorStatus] = useState<Record<string, boolean>>({});
+  // set this to true/false when the verse fetch resolves/fails, e.g. in onAutoFillSubmit or an onBlur handler
+
+  const tanggalRegex = /^(\d+)-(\d+)-(\d+)$/;
 
   const {
     register,
     handleSubmit,
     getValues,
+    setValue,
     setError,
     clearErrors,
+    control,
     formState: { errors },
   } = useForm<FieldValues>();
 
   const { csrf } = useCsrf();
-
-  const passageMap: { [key: string]: string } = {};
-  for (const i of PassageList) {
-    const abbrs = i.abbr.toLowerCase();
-    passageMap[i.name.toLowerCase()] = abbrs;
-  }
-  // console.log(passageMap);
-
-  const passageRegex = /^(\d+)?(?:\s+|%20)?([^0-9:]+)*/;
-  const tanggalRegex = /^(\d+)-(\d+)-(\d+)$/;
 
   // for clean resizing window feat
   useEffect(() => {
@@ -75,33 +66,19 @@ function Liturgi() {
     });
   }, []);
 
-  // convert ayat into abbr type if not already
-  const nameToAbbr = (ayat: string) => {
-    const lowAyat = ayat.toLowerCase();
-    const matches = lowAyat.match(passageRegex);
-    if (matches) {
-      console.log(matches);
-      // console.log(
-      //   lowAyat.replace(matches[1], passageMap[matches[1]] ?? matches[1]),
-      // );
-
-      const ayats =
-        (matches[1] ? matches[1] + " " : "") + matches[2].toLowerCase().trim();
-      const ress = passageMap[ayats];
-      const ayatToBeReplace = matches[1] ? ress.substring(2) : ress;
-      return lowAyat.replace(matches[2], ayatToBeReplace);
-    }
-    return lowAyat;
-  };
-
   // only fetch from backend API,not other API
-  const tryFetch = async (link: string, method: string, bodys?: object) => {
+  const tryFetch = async (
+    link: string,
+    method: string,
+    bodys?: object,
+    type?: string,
+  ) => {
     setLoad(true);
     try {
       const res = await fetch(link, {
         method,
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": `application/${type ?? "json"}`,
           "X-CSRF-Token": csrf,
         },
         credentials: "include",
@@ -123,11 +100,14 @@ function Liturgi() {
             });
           } else {
             // Case 2: field-specific validation errors, e.g. { Ayat: "Invalid Credential" }
+            setErrorStatus({});
             Object.entries(errorBody).forEach(([field, message]) => {
               setError(field, {
                 type: "server",
                 message: String(message),
               });
+
+              setErrorStatus({ ...errorStatus, [field]: true });
             });
           }
         } else {
@@ -154,13 +134,49 @@ function Liturgi() {
 
   // func for submit
   const onSubmit = async (e: FieldValues) => {
+    // console.log(errorStatus);
+    const load = {
+      Tema: e.Tema,
+      Tanggal: e.Tanggal,
+      Pendeta: e.Pendeta,
+      Penatua: e.Penatua,
+      Verse_Firman: e.Verse_Firman,
+      Verse_Kata_Pembuka: e.Verse_Kata_Pembuka,
+      Verse_Berita_Anugerah: e.Verse_Berita_Anugerah,
+      Verse_Persembahan: e.Verse_Persembahan,
+      Verse_Kata_Pembuka_Text: errorStatus.Verse_Kata_Pembuka
+        ? e.Verse_Kata_Pembuka_Text
+        : "",
+      Verse_Berita_Anugerah_Text: errorStatus.Verse_Berita_Anugerah
+        ? e.Verse_Berita_Anugerah_Text
+        : "",
+      Verse_Persembahan_Text: errorStatus.Verse_Persembahan
+        ? e.Verse_Persembahan_Text
+        : "",
+      Song1: e.Song1,
+      Song1_Lyrics: errorStatus.Song1 ? e.Song1_Lyrics : "",
+      Song2: e.Song2,
+      Song2_Lyrics: errorStatus.Song2 ? e.Song2_Lyrics : "",
+      Song3: e.Song3,
+      Song3_Lyrics: errorStatus.Song3 ? e.Song3_Lyrics : "",
+      Song4: e.Song4,
+      Song4_Lyrics: errorStatus.Song4 ? e.Song4_Lyrics : "",
+      Song5: e.Song5,
+      Song5_Lyrics: errorStatus.Song5 ? e.Song5_Lyrics : "",
+      Song6: e.Song6,
+      Song6_Lyrics: errorStatus.Song6 ? e.Song6_Lyrics : "",
+      Pelayanan_Pujian: e.Pelayanan_Pujian,
+    };
     const res = await tryFetch(
       import.meta.env.VITE_BACKEND_URL + "/api/docs/liturgi",
       "POST",
-      e,
+      load,
+      "json",
     );
 
-    console.log(res);
+    setLoad(false);
+    // console.log(res);
+    // return;
 
     const blob = await res?.blob();
     if (blob) {
@@ -172,7 +188,7 @@ function Liturgi() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Liturgi Remaja - ${year} ${mon} ${day}.docs`; // Target filename
+      a.download = `Liturgi Remaja - ${day} ${mon} ${year}.docx`; // Target filename
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -239,8 +255,8 @@ function Liturgi() {
     const liturgi = await fLiturgi.json();
     const jadwal = await fJadwal.json();
 
-    console.log(liturgi[mon]);
-    console.log(day);
+    // console.log(liturgi[mon]);
+    // console.log(day);
 
     if (!Object.prototype.hasOwnProperty.call(liturgi, mon)) {
       setError("Tanggal", { type: "user", message: "Month isn't in liturgi" });
@@ -271,36 +287,21 @@ function Liturgi() {
     const filledValue: { [key: string]: string } = {
       Tema: litObj.Tema ?? "",
       Pendeta: jadObj ?? "",
-      "Ayat Firman": nameToAbbr(litObj["Ayat Firman"] ?? ""),
-      "Ayat Kata Pembuka": nameToAbbr(litObj["Ayat KP"] ?? ""),
-      "Ayat Berita Anugerah": nameToAbbr(litObj["Ayat BA"] ?? ""),
-      "Ayat Persembahan": nameToAbbr(litObj["Ayat Persembahan"] ?? ""),
-      "Lagu Votum": litObj.Lagu[1] ?? "",
-      "Lagu Kata Pembuka": litObj.Lagu[2] ?? "",
-      "Lagu Pengakuan Dosa": litObj.Lagu[3] ?? "",
-      "Lagu Berita Anugerah": litObj.Lagu[4] ?? "",
-      "Lagu Persembahan": litObj.Lagu[5] ?? "",
-      "Lagu Pengutusan": litObj.Lagu[6] ?? "",
+      Verse_Firman: litObj["Ayat Firman"] ?? "",
+      Verse_Kata_Pembuka: litObj["Ayat KP"] ?? "",
+      Verse_Berita_Anugerah: litObj["Ayat BA"] ?? "",
+      Verse_Persembahan: litObj["Ayat Persembahan"] ?? "",
+      Song1: litObj.Lagu[1] ?? "",
+      Song2: litObj.Lagu[2] ?? "",
+      Song3: litObj.Lagu[3] ?? "",
+      Song4: litObj.Lagu[4] ?? "",
+      Song5: litObj.Lagu[5] ?? "",
+      Song6: litObj.Lagu[6] ?? "",
     };
 
-    setformHeader(
-      formHeader.map((obj) => {
-        obj.value = filledValue[obj.field];
-        return obj;
-      }),
-    );
-    setformLagus(
-      formLagus.map((obj) => {
-        obj.value = filledValue[obj.field];
-        return obj;
-      }),
-    );
-    setformAyats(
-      formAyats.map((obj) => {
-        obj.value = filledValue[obj.field];
-        return obj;
-      }),
-    );
+    Object.entries(filledValue).forEach(([field, value]) => {
+      setValue(field, value, { shouldValidate: true, shouldDirty: true });
+    });
 
     setAutofill(false);
   };
@@ -320,17 +321,22 @@ function Liturgi() {
               )}
               hidden={autofill}
             >
-              {formHeader.map(({ id, field, types, placeholder, value }) => (
+              {formHead.map(({ id, field, types, placeholder }) => (
                 <div key={id}>
                   <h3>{field}:</h3>
-                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
-                  <input
-                    type={types}
-                    placeholder={placeholder}
-                    value={value}
-                    required
-                    {...register(field)}
+                  <Controller
+                    name={field}
+                    control={control}
+                    render={({ field: rhfField }) => (
+                      <input
+                        type={types}
+                        placeholder={placeholder}
+                        required
+                        {...rhfField}
+                      />
+                    )}
                   />
+                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
                 </div>
               ))}
             </div>
@@ -343,17 +349,51 @@ function Liturgi() {
               )}
               hidden={autofill}
             >
-              {formAyats.map(({ id, field, types, placeholder, value }) => (
+              {formAyat.map(({ id, field, types, placeholder }, idx) => (
                 <div key={id}>
                   <h3>{field}:</h3>
-                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
-                  <input
-                    type={types}
-                    placeholder={placeholder}
-                    value={value}
-                    required
-                    {...register(field)}
+                  <Controller
+                    name={"Verse_" + field.substring(5).replaceAll(" ", "_")}
+                    control={control}
+                    render={({ field: rhfField }) => (
+                      <input
+                        type={types}
+                        placeholder={placeholder}
+                        required
+                        {...rhfField}
+                      />
+                    )}
                   />
+                  {errors[
+                    "Verse_" + field.substring(5).replaceAll(" ", "_")
+                  ] && (
+                    <p>
+                      {String(
+                        errors[
+                          "Verse_" + field.substring(5).replaceAll(" ", "_")
+                        ]?.message,
+                      )}
+                    </p>
+                  )}
+                  {(errors[
+                    "Verse_" + field.substring(5).replaceAll(" ", "_")
+                  ] ||
+                    getValues(
+                      "Verse_" +
+                        field.substring(5).replaceAll(" ", "_") +
+                        "_Text",
+                    ) !== "") &&
+                    idx > 0 && (
+                      <textarea
+                        placeholder='Tulis ayat disini'
+                        {...register(
+                          "Verse_" +
+                            field.substring(5).replaceAll(" ", "_") +
+                            "_Text",
+                        )}
+                        rows={4}
+                      />
+                    )}
                 </div>
               ))}
             </div>
@@ -366,17 +406,32 @@ function Liturgi() {
               )}
               hidden={autofill}
             >
-              {formLagus.map(({ id, field, types, placeholder, value }) => (
+              {formLagu.map(({ id, field, types, placeholder }) => (
                 <div key={id}>
                   <h3>{field}:</h3>
-                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
-                  <input
-                    type={types}
-                    placeholder={placeholder}
-                    value={value}
-                    required
-                    {...register(field)}
+                  <Controller
+                    name={`Song${id}`}
+                    control={control}
+                    render={({ field: rhfField }) => (
+                      <input
+                        type={types}
+                        placeholder={placeholder}
+                        required
+                        {...rhfField}
+                      />
+                    )}
                   />
+                  {errors[`Song${id}`] && (
+                    <p>{String(errors[`Song${id}`]?.message)}</p>
+                  )}
+                  {(errors[`Song${id}`] || getValues(`Song${id}_Lyrics`)) !==
+                    "" && (
+                    <textarea
+                      placeholder='Tulis lagu disini'
+                      {...register(`Song${id}_Lyrics`)}
+                      rows={4}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -390,7 +445,7 @@ function Liturgi() {
                 id='default-checkbox'
                 type='checkbox'
                 value=''
-                {...register("Pelayanan Pujian")}
+                {...register("Pelayanan_Pujian")}
               />
               <label htmlFor='default-checkbox'>Pelayanan Pujian</label>
             </div>
@@ -406,12 +461,12 @@ function Liturgi() {
               {formAutofill.map(({ id, field, types, placeholder }) => (
                 <div key={id}>
                   <h3>{field}:</h3>
-                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
                   <input
                     type={types}
                     placeholder={placeholder}
                     {...register(field)}
                   />
+                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
                 </div>
               ))}
             </div>

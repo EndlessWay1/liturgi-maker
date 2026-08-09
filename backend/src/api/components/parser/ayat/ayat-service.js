@@ -399,38 +399,186 @@ const PassageList = [
   },
 ];
 
-const findPassage = (abr) => PassageList.find((pass) => pass.abbr === abr);
+const chapterCache = new Map(); // key: `${abr}:${cptr}` -> { data, expiry }
 
 const getAyatList = async (abr, cptr, ayt_a, ayt_b) => {
-  if (!ayt_b) {
-    ayt_b = ayt_a;
+  if (!ayt_b) ayt_b = ayt_a;
+
+  const cacheKey = `${abr}:${cptr}`;
+  let data = chapterCache.get(cacheKey);
+
+  if (!data) {
+    const res = await fetch(
+      `https://beeble.vercel.app/api/v1/passage/${abr}/${cptr}?ver=tb`,
+      { signal: AbortSignal.timeout(4000) }
+    );
+
+    if (!res.ok) {
+      throw errorResponder(
+        errorTypes.FETCH_ERROR,
+        'Fetching error, please try again.'
+      );
+    }
+
+    const json = await res.json();
+    if (Object.keys(json).length === 0) {
+      throw errorResponder(errorTypes.NOT_FOUND, 'Ayat was not found');
+    }
+
+    data = { value: json };
+    chapterCache.set(cacheKey, data);
   }
 
-  const res = await fetch(
-    `https://beeble.vercel.app/api/v1/passage/${abr}/${cptr}?ver=tb`
-  );
-  console.log(res);
-
-  if (!res.ok) {
-    throw errorResponder(errorTypes.FETCH_ERROR, 'Ayat not found');
-  }
-
-  const data = await res.json();
-
-  if (data === {}) {
-    throw errorResponder(errorTypes.NOT_FOUND, 'Ayat not found');
-  }
-
-  const ayats = data.data.verses;
+  const ayats = data.value.data.verses;
   const ret1 = ayats.filter(
     ({ verse, type }) => type === 'content' && verse >= ayt_a && verse <= ayt_b
   );
 
-  return {
-    book: abr,
-    chapter: cptr,
-    verse: ayt_a ? ret1 : ayats,
-  };
+  return { book: abr, chapter: cptr, verse: ayt_a ? ret1 : ayats };
 };
 
-export { findPassage, PassageList, getAyatList };
+const superscript = {
+  0: '⁰',
+  1: '¹',
+  2: '²',
+  3: '³',
+  4: '⁴',
+  5: '⁵',
+  6: '⁶',
+  7: '⁷',
+  8: '⁸',
+  9: '⁹',
+};
+// convert ayat into abbr type if not already
+const nameToAbbr = (ayat) => {
+  const passageRegex = /^(\d+)?(?:\s+|%20)?([^0-9:]+)*/;
+  const passageMap = {};
+  for (const i of PassageList) {
+    const abbrs = i.abbr.toLowerCase();
+    passageMap[i.name.toLowerCase()] = abbrs;
+  }
+  const lowAyat = ayat.toLowerCase();
+  const matches = lowAyat.match(passageRegex);
+  if (matches) {
+    const ayats =
+      (matches[1] ? matches[1] + ' ' : '') + matches[2].toLowerCase().trim();
+    const ress = passageMap[ayats];
+    const ayatToBeReplace = matches[1] ? ress.substring(2) : ress;
+    return lowAyat.replace(matches[2], ayatToBeReplace);
+  }
+  return lowAyat;
+};
+
+const ayatSubscript = (num) => {
+  const a = String(num);
+  const len = a.length;
+  let empty = '';
+  for (let i = 0; i < len; i++) {
+    empty += superscript[a.charAt(i)];
+  }
+  return empty;
+};
+
+const getAyat = async (ayat) => {
+  const books = nameToAbbr(ayat.trim());
+
+  if (books.length <= 3) {
+    throw errorResponder(errorTypes.NOT_FOUND, 'Ayat not found');
+  }
+
+  const regexs =
+    // -----------------Book----------------------------
+    /^(\d+)?(?:\s+|%20)?(\w{3})(?:\s+|%20)?(\d+)?(?:\s+|%20)?(?:(?:\:)(?:\s+|%20)?(\d+)(?:(?:\s+|%20)?\-(?:\s+|%20)?(\d+))?)?/;
+
+  const parseAyat = (str) =>
+    /(?:\s+|%20)?(\d+)?(?:\s+|%20)?(?:(?:\:)(?:\s+|%20)?(\d+)(?:(?:\s+|%20)?\-(?:\s+|%20)?(\d+))?)?/.exec(
+      str
+    );
+
+  const parseAyatWithOutEqual = (str) =>
+    /(?:\s+|%20)?(\d+)(?:(?:\s+|%20)?\-(?:\s+|%20)?(\d+))?/.exec(str);
+
+  const splited = books.split(',');
+
+  const firstRegex = regexs.exec(books);
+  const bookName =
+    (firstRegex[1] ? firstRegex[1] + ' ' : '') +
+    firstRegex[2].charAt(0).toUpperCase() +
+    firstRegex[2].substring(1).toLowerCase();
+
+  const pasNo = firstRegex[3];
+
+  const limA = firstRegex[4];
+  const limB = limA && firstRegex[5] ? firstRegex[5] : undefined;
+
+  let hasEqual = pasNo && splited[0].includes(':');
+
+  const find = [
+    {
+      book: bookName,
+      chapter: pasNo,
+      verseA: limA,
+      verseB: limB,
+    },
+  ];
+
+  // has more to find
+  if (splited.length > 1) {
+    let prev = pasNo;
+    splited.map((str, idx) => {
+      if (idx > 0) {
+        let dataAyat, passNo, limA, limB;
+        if (str.includes(':')) // with new pass No
+        {
+          dataAyat = parseAyat(str);
+          passNo = dataAyat[1];
+          prev = passNo;
+          limA = dataAyat[2];
+          limB = limA && dataAyat[3] ? dataAyat[3] : undefined;
+          hasEqual = !!limA;
+        } else {
+          dataAyat = parseAyatWithOutEqual(str);
+          passNo = prev;
+          limA = dataAyat[1];
+          limB = limA && dataAyat[2] ? dataAyat[2] : undefined;
+          if (!hasEqual) {
+            prev = limA;
+            passNo = limA;
+            limA = undefined;
+            limB = undefined;
+          }
+        }
+
+        find.push({
+          book: bookName,
+          chapter: passNo,
+          verseA: limA,
+          verseB: limB,
+        });
+      }
+    });
+  }
+  const resulted = Promise.all(
+    find.map(async ({ book, chapter, verseA, verseB }) =>
+      getAyatList(book, chapter, verseA, verseB)
+    )
+  );
+  return resulted;
+};
+
+const valAyat = async (ayat) => {
+  const resulted = await getAyat(ayat);
+
+  const content = [];
+
+  for (const res of resulted) {
+    let subStr = [];
+    for (const verse of res.verse) {
+      subStr.push(ayatSubscript(verse.verse) + verse.content);
+    }
+    subStr.length > 0 && content.push('"' + subStr.join(' ') + '"');
+  }
+  return content.join(',\n');
+};
+
+export { PassageList, getAyatList, valAyat, getAyat };
