@@ -163,7 +163,7 @@ body {
 
 @layer components {
   header {
-    @apply w-screen fixed top-0 left-0 z-50 flex-center bg-text-color min-h-[7vh];
+    @apply w-screen fixed top-0 left-0 z-50 flex-center bg-text-color min-h-[max(7vh,54px)];
 
     nav {
       @apply container mx-auto justify-center md:justify-between items-center flex md:px-[8vw] lg:px-[10vw];
