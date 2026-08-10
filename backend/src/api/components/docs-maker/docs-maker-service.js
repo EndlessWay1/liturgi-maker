@@ -5,10 +5,20 @@ import PizZip from 'pizzip';
 
 // Builtin file system utilities
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const templatePath = path.resolve(
+  __dirname,
+  '../../../../public/Liturgi_Template.docx'
+);
 
 const makeTemplate = (render) => {
   // Load the docx file as binary content
-  const content = fs.readFileSync('./public/Liturgi_Template.docx', 'binary');
+  const content = fs.readFileSync(templatePath, 'binary');
 
   // Unzip the content of the file
   const zip = new PizZip(content);

@@ -48,7 +48,7 @@ app.use(pinoHTTP({ logger }));
 app.use(cookieParser());
 
 // use csrf
-app.use(csrfMiddleware);
+// app.use(csrfMiddleware);
 
 // API routes
 app.use(`${config.api.prefix}`, routes());
