@@ -44,7 +44,7 @@ function SongsToString(song, lim) {
   if (!lim) {
     return song.lyrics
       .map(({ number, baris }) => {
-        return `${number === 'reff' ? 'reff:' : number + '.'} ${baris.map((r) => r + '\n').join('')}`;
+        return `${number === 'reff' ? 'Reff:\n' : number + '.'} ${baris.map((r) => r + '\n').join('')}`;
       })
       .join('\n');
   }
@@ -54,7 +54,7 @@ function SongsToString(song, lim) {
     return song.lyrics
       .map(({ number, baris }) => {
         if (splited.has(number) || number === 'reff') {
-          return `${number === 'reff' ? 'reff:' : number + '.'} ${baris.map((r) => r + '\n').join('')}`;
+          return `${number === 'reff' ? 'Reff:\n' : number + '.'} ${baris.map((r) => r + '\n').join('')}`;
         }
       })
       .filter((a) => a)
@@ -66,7 +66,7 @@ function SongsToString(song, lim) {
   if (!range) {
     return song.lyrics
       .map(({ number, baris }) => {
-        return `${number === 'reff' ? 'reff:' : number + '.'} ${baris.map((r) => r + '\n').join('')}`;
+        return `${number === 'reff' ? 'Reff:\n' : number + '.'} ${baris.map((r) => r + '\n').join('')}`;
       })
       .join('\n');
   }
@@ -79,7 +79,7 @@ function SongsToString(song, lim) {
   return song.lyrics
     .map(({ number, baris }) => {
       if (ranges.has(number) || number === 'reff') {
-        return `${number === 'reff' ? 'reff:' : number + '.'} ${baris.map((r) => r + '\n').join('')}`;
+        return `${number === 'reff' ? 'Reff:\n' : number + '. '}${baris.map((r) => r + '\n').join('')}`;
       }
     })
     .filter((a) => a)

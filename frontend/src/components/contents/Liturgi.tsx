@@ -100,15 +100,15 @@ function Liturgi() {
             });
           } else {
             // Case 2: field-specific validation errors, e.g. { Ayat: "Invalid Credential" }
-            setErrorStatus({});
+            const newErrorStatus: Record<string, boolean> = {};
             Object.entries(errorBody).forEach(([field, message]) => {
               setError(field, {
                 type: "server",
                 message: String(message),
               });
-
-              setErrorStatus({ ...errorStatus, [field]: true });
+              newErrorStatus[field] = true;
             });
+            setErrorStatus((prev) => ({ ...prev, ...newErrorStatus }));
           }
         } else {
           setError("root", {
@@ -424,8 +424,8 @@ function Liturgi() {
                   {errors[`Song${id}`] && (
                     <p>{String(errors[`Song${id}`]?.message)}</p>
                   )}
-                  {(errors[`Song${id}`] || getValues(`Song${id}_Lyrics`)) !==
-                    "" && (
+                  {(errors[`Song${id}`] ||
+                    getValues(`Song${id}_Lyrics`) !== "") && (
                     <textarea
                       placeholder='Tulis lagu disini'
                       {...register(`Song${id}_Lyrics`)}
