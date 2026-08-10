@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { formSurat } from "../../constants";
-import { useCsrf } from "../../context/CSRFContext";
+// import { useCsrf } from "../../context/CSRFContext";
 
 export function Surat() {
   const isMobile = useMediaQuery({ query: "(max-width: 1048px)" });
@@ -18,7 +18,7 @@ export function Surat() {
   } = useForm<FieldValues>();
 
   const [Load, setLoad] = useState(false);
-  const { csrf } = useCsrf();
+  // const { csrf } = useCsrf();
 
   const onSubmit = async () => {
     setLoad(true);
@@ -29,7 +29,7 @@ export function Surat() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": csrf,
+          // "X-CSRF-Token": csrf,
         },
         credentials: "include",
         // body: JSON.stringify(e),
@@ -151,9 +151,9 @@ export function Surat() {
           {errors.root && (
             <p className='text-center'>{String(errors.root.message)}</p>
           )}
-          {csrf === "" && (
+          {/* {csrf === "" && (
             <p className='text-center'>Please refresh the page.</p>
-          )}
+          )} */}
           <div className='flex justify-center m-5'>
             <button
               type='submit'

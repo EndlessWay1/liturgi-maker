@@ -12,6 +12,7 @@ function CsrfProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function loadCsrf() {
+      // wakes up backend
       const res = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/api/csrf-token",
         {

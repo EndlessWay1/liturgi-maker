@@ -6,7 +6,7 @@ import { Surat } from "./contents/Surat";
 import Liturgi from "./contents/Liturgi";
 import { Home } from "./contents/Home";
 import LiturgiExp from "./contents/LiturgiExp";
-import { CsrfProvider } from "../context/CSRFProvider";
+// import { CsrfProvider } from "../context/CSRFProvider";
 
 export default function AppWrapper() {
   const { isDark } = useDarkMode();
@@ -17,10 +17,10 @@ export default function AppWrapper() {
       <main>
         <Home key={"home"} />
         <LiturgiExp />
-        <CsrfProvider>
-          <Liturgi key={"liturgi"} />
-          <Surat key={"surat"} />
-        </CsrfProvider>
+        {/* <CsrfProvider> */}
+        <Liturgi key={"liturgi"} />
+        <Surat key={"surat"} />
+        {/* </CsrfProvider> */}
         <About key={"about"} />
       </main>
       <Footer />

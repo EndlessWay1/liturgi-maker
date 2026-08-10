@@ -11,7 +11,7 @@ import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useCsrf } from "../../context/CSRFContext";
+// import { useCsrf } from "../../context/CSRFContext";
 
 function Liturgi() {
   const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
@@ -36,7 +36,7 @@ function Liturgi() {
     formState: { errors },
   } = useForm<FieldValues>();
 
-  const { csrf } = useCsrf();
+  // const { csrf } = useCsrf();
 
   // for clean resizing window feat
   useEffect(() => {
@@ -79,7 +79,7 @@ function Liturgi() {
         method,
         headers: {
           "Content-Type": `application/${type ?? "json"}`,
-          "X-CSRF-Token": csrf,
+          // "X-CSRF-Token": csrf,
         },
         credentials: "include",
         body: JSON.stringify(bodys ?? null),
@@ -311,7 +311,7 @@ function Liturgi() {
       <h1>Liturgi Generator</h1>
       <div id='form-canvas'>
         <form action='#' method='post' onSubmit={handleSubmit(onSubmit)}>
-          <input type='hidden' value={csrf} />
+          {/* <input type='hidden' value={csrf} /> */}
           <div id='form-sect'>
             <h2 hidden={autofill}>Heading Section</h2>
             <div
@@ -474,9 +474,9 @@ function Liturgi() {
           {errors.root && (
             <p className='text-center'>{String(errors.root.message)}</p>
           )}
-          {csrf === "" && (
+          {/* {csrf === "" && (
             <p className='text-center'>Please refresh the page.</p>
-          )}
+          )} */}
           <div className='flex not-sm:grid justify-center m-5 gap-10 not-sm:gap-5'>
             <button
               type='button'
