@@ -24,16 +24,17 @@ const guide: guideType[] = [
     id: "guide1",
     subhead: "Pendeta/Penatua",
     text: "Mohon untuk gelar ditulis dengan lengkap.",
-    example: "Pdt. Naya",
+    example: "Pdt. Naya, Pnt. Abe, Pnt. Em. Eli, dst.",
     styles: "left-0 top-[20%] md:top-[25%] opacity-0 translate-y-5",
   },
   {
     id: "guide2",
     subhead: "Ayat",
-    text: "Format input diperhatikan. [NamaBuku] [pasal]:[ayat]",
-    example: "Yoh 3:16, yoh 3:16,18, atau YOH 3:16-18,22-24",
+    text: "Format input diperhatikan. [NamaBuku] [pasal]:[ayat], bila harus diinput manual, mohon untuk menambahkan quotation mark.",
+    example:
+      'Yoh 3:16, yoh 3:16,18, atau Yohanes3:16-18,22-24.  Atau "Adalah seorang Farisi yang bernama Nikodemus, b  seorang pemimpin agama c  Yahudi."',
     styles:
-      "right-0 not-md:right-0 top-[40%] md:top-[40%] opacity-0 translate-y-5",
+      "right-0 not-md:right-0 top-[30%] md:top-[30%] opacity-0 translate-y-5",
   },
   {
     id: "guide3",
@@ -45,7 +46,7 @@ const guide: guideType[] = [
     id: "guide4",
     subhead: "Koreksi",
     text: "Mohon untuk liturgi di cek kembali mulai dari ayat, tanggal, dan lagu yang tertera. Bila ada pertanyaan boleh kontak pembuat.",
-    styles: "right-0 not-md:left-0 top-[80%] opacity-0 translate-y-5",
+    styles: "right-0 not-md:left-0 top-[70%] opacity-0 translate-y-5",
   },
 ];
 
@@ -187,7 +188,6 @@ const formSurat: formType[] = [
     placeholder: "Link",
   },
 ];
-
 
 // if edited or changed please change onAutoFillSubmit func
 const formAutofill: formType[] = [
@@ -625,8 +625,6 @@ const aboutMe = [
   },
 ];
 
-
-
 export {
   navLinks,
   guide,
@@ -637,6 +635,6 @@ export {
   aboutMe,
   formAutofill,
   PassageList,
-  namaBulan
+  namaBulan,
 };
 export type { NavType };
