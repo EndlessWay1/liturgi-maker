@@ -255,8 +255,8 @@ function Liturgi() {
     const liturgi = await fLiturgi.json();
     const jadwal = await fJadwal.json();
 
-    // console.log(liturgi[mon]);
-    // console.log(day);
+    // console.log(liturgi);
+    // console.log(jadwal);
 
     if (!Object.prototype.hasOwnProperty.call(liturgi, mon)) {
       setError("Tanggal", { type: "user", message: "Month isn't in liturgi" });

@@ -20,19 +20,19 @@ export function Surat() {
   const [Load, setLoad] = useState(false);
   // const { csrf } = useCsrf();
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: Record<string, unknown>) => {
     setLoad(true);
     const urls = import.meta.env.VITE_BACKEND_URL;
-    const path = "/api/songs/";
+    const path = "/api/docs/surat/";
     try {
       const res = await fetch(urls + path, {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           // "X-CSRF-Token": csrf,
         },
         credentials: "include",
-        // body: JSON.stringify(e),
+        body: JSON.stringify(e),
       });
       // Handle HTTP error statuses (like 400 or 500)
       if (!res.ok) {
@@ -67,16 +67,23 @@ export function Surat() {
         // console.log(await res.json());
         return;
       }
-      console.log(await res.json());
-      // const blob = await res.blob();
-      // const url = window.URL.createObjectURL(blob);
-      // const a = document.createElement("a");
-      // a.href = url;
-      // a.download = `${e.Tanggal}.txt`; // Target filename
-      // document.body.appendChild(a);
-      // a.click();
-      // a.remove();
-      // window.URL.revokeObjectURL(url);
+      // console.log(await res.json());
+      const blob = await res?.blob();
+      if (blob) {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Surat Pendeta ${e["Bulan Tujuan"]}.zip`; // Target filename
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        setError("root", {
+          type: "failed zip",
+          message: "Failed to download zip",
+        });
+      }
       setLoad(false);
     } catch (err) {
       // Catch network failures OR errors thrown in the 'if (!response.ok)' block
@@ -105,7 +112,6 @@ export function Surat() {
               {formSurat.map(({ id, field, types, placeholder, month }) => (
                 <div key={id}>
                   <h3>{field}:</h3>
-                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
                   {month ? (
                     <select
                       required
@@ -127,7 +133,7 @@ export function Surat() {
                       </option>
                       {month?.map((mon, idx) => (
                         <option
-                          value={mon.toLowerCase()}
+                          value={mon}
                           key={`${idx}-month`}
                           className='text-black'
                         >
@@ -144,6 +150,7 @@ export function Surat() {
                       {...register(field)}
                     />
                   )}
+                  {errors[field] && <p>{String(errors[field]?.message)}</p>}
                 </div>
               ))}
             </div>

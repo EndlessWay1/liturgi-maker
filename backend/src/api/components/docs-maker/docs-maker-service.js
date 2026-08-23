@@ -16,7 +16,26 @@ const templatePath = path.resolve(
   '../../../../public/Liturgi_Template.docx'
 );
 
-const makeTemplate = (render) => {
+const suratDalam = {
+  Naya: path.resolve(
+    __dirname,
+    '../../../../public/Surat_Pendeta_Pak_Naya.docx'
+  ),
+  Angela: path.resolve(
+    __dirname,
+    '../../../../public/Surat_Pendeta_Pnt_Angela.docx'
+  ),
+  Gloria: path.resolve(
+    __dirname,
+    '../../../../public/Surat_Pendeta_Kak_Gloria.docx'
+  ),
+};
+const suratLuar = path.resolve(
+  __dirname,
+  '../../../../public/Surat_Pendeta_Luar.docx'
+);
+
+const makeLiturgiTemplate = (render) => {
   // Load the docx file as binary content
   const content = fs.readFileSync(templatePath, 'binary');
 
@@ -46,10 +65,22 @@ const makeTemplate = (render) => {
   return doc.renderAsync(render).then((val) => val.toBuffer());
 };
 // Write the Buffer to a file
-/*
- * Instead of writing it to a file, you could also
- * let the user download it, store it in a database,
- * on AWS S3, ...
- */
 
-export { makeTemplate };
+const makeSuratTemplate = (render) => {
+  // Load the docx file as binary content
+
+  const PF = render.NamaPF.match(/(Naya|Gloria|Angela)/);
+
+  const content = fs.readFileSync(PF ? suratDalam[PF[1]] : suratLuar, 'binary');
+
+  // Unzip the content of the file
+  const zip = new PizZip(content);
+
+  const doc = new Docxtemplater(zip, {
+    paragraphLoop: true,
+    linebreaks: true,
+  });
+  return doc.render(render).toBuffer();
+};
+
+export { makeLiturgiTemplate, makeSuratTemplate };
