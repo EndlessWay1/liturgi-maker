@@ -39,7 +39,7 @@ const makeLiturgiTemplate = (render) => {
   // Load the docx file as binary content
   const content = fs.readFileSync(templatePath, 'binary');
 
-  // Unzip the content of the file
+// Unzip the content of the file
   const zip = new PizZip(content);
 
   /*

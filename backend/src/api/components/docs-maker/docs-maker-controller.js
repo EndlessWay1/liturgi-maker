@@ -59,7 +59,12 @@ const filterHead = (req, res, next) => {
 
 const makeLiturgi = async (req, res) => {
   //   console.log(req.body);
-  const buff = await makeLiturgiTemplate(req.body);
+
+  const isPendeta = req.body.Pendeta.match(/(Pdt|TPG)/);
+  const kita = isPendeta ? 'engkau' : 'kita';
+  const kitaWithSpace = isPendeta ? 'mu' : ' kita';
+
+  const buff = await makeLiturgiTemplate({ ...req.body, kita, kitaWithSpace });
   res.setHeader(
     'Content-Type',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
