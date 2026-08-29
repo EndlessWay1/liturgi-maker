@@ -164,7 +164,7 @@ const makeSurat = async (req, res) => {
     const NamaPF = Jadwal[day];
     const DueDate = `Minggu, ${day} ${Month} ${SysYear}`;
     const Theme = curData['Tema'];
-    const BacaanAlkitab = curData['Ayat BA'];
+    const BacaanAlkitab = curData['Ayat Firman'];
     const FokusTema = curData['Fokus'].map((val) => {
       return {
         name: val,
