@@ -140,8 +140,8 @@ const filterSurat = async (req, res, next) => {
   }
   const date = new Date();
 
-  req.body.Liturgi = req.body.Liturgi[mon - 1];
-  req.body.Jadwal = req.body.Jadwal[mon - 1];
+  req.body.Liturgi = req.body.Liturgi[mon];
+  req.body.Jadwal = req.body.Jadwal[mon];
   req.body.NoSurat = Number(No);
   req.body.SysDate = `${date.getDate()} ${namaBulan[date.getMonth() - 1]} ${date.getFullYear()}`;
   req.body.SysYear = `${date.getFullYear()}`;
